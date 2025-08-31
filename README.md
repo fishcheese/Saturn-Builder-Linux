@@ -29,7 +29,7 @@ Saturn-Builder is a friendly app made with Python that helps you build Android a
 
 ## 🛠️ How to Get Started / Как начать
 
-Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10 / 11 (windows 7 не пробовал, попробуйте если хотите)
+Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11 (windows 7 не пробовал, попробуйте если хотите)
 
 1. Visit the [releases page](https://github.com/EwenLoy/Saturn-Builder/releases/tag/main). / Просто скачайте exe со страницы релизов
 2. Download the `Saturn-Builder.exe` file (it’s like a setup program).
