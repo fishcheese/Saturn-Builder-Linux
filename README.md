@@ -1,12 +1,9 @@
-<img src="https://via.placeholder.com/50x50.png?text=Saturn+Icon" alt="Saturn-Builder Icon" width="50" height="50" style="vertical-align: middle; margin-right: 10px;"> # Saturn-Builder 🪐
+## <img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/cd085b32-5d66-4016-b691-272b6631c8b0" />  Construct 3 Cordova zip to apk builder 
+ 
+   <img width="200" height="200" alt="" src="https://github.com/user-attachments/assets/b427cf12-2630-4aff-8d52-a465ac1397cf" />
 
-[<a href="README.ru.md"><button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; border-radius: 5px;">Русский 🇷🇺</button></a>]
-
-✨ **Saturn-Builder** is a fun and easy tool to create Android apps (APK and AAB files) with a simple interface. It helps you set up everything you need automatically and works with projects like Cordova and Android Studio. You can even switch between English and Russian! 🚀
-
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/EwenLoy/Saturn-Builder)
-![GitHub downloads](https://img.shields.io/github/downloads/EwenLoy/Saturn-Builder/total)
-![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)
+   ## 
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/EwenLoy/Saturn-Builder) ![GitHub downloads](https://img.shields.io/github/downloads/EwenLoy/Saturn-Builder/total) ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)
 
 ---
 
@@ -41,7 +38,7 @@ Saturn-Builder works on **Windows 10 or 11**. Here’s how to start:
 
 ---
 
-## 🚀 How to Use It
+## 👀 How to use
 
 1. **Open the App**:
    - After installing, click `Saturn-Builder.exe` to start.
