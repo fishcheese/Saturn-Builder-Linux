@@ -41,9 +41,10 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 
 ## 👀 How to use / Как пользоваться
 
-1. **First start**:
+1. **First start**: / Первый запуск
    - After installing, click `Saturn-Builder.exe` to start.
    - The first time, it will ask to install some tools. Click **Install Dependencies** to get started, or **Skip for Now** if you want to try it later (but you won’t be able to make apps yet).
+   - При первом запуске вам будет предложено установить необходимые зависимости (~1GB), однако если вы откажетесь, приложение не будет работать
    
      <div align="left"><img width="500" height="500" alt="Снимок экрана 2025-08-31 180023" src="https://github.com/user-attachments/assets/c1bd34f4-9203-48d6-8f1c-baeab97fe776" />
 
@@ -52,17 +53,23 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
    - Choose English or Russian from a dropdown menu in the app.
    - The app will change its language right away!
 
-3. **Open the Cordova Project (zip)**:
+3. **Open the Cordova Project (zip)**: / нажмите кнопку загрузить проект (Load project) ваш zip архив Cordova
    - Click **Load Project** to open one you’ve worked on before.
-   - Tell the app where your project is saved and pick what kind of file you want (like APK).
 
-4. **Build Your App**:
-   - Choose how you want to build your app (the app will guide you).
-   - If you need a special key for your app, follow the steps to add it.
-   - Click **Build** and watch the progress on the screen.
+3.1 **Choose build type** / Выберете тип билда
+- Debug APK
+- Unsigned release APK
+- Unsigned Android App Bundle
+- Signed debug APK
+- Signed release APK
+- Signed Android App Bundle
+4. **Build Your App**: / Сборка вашего приложения
+   - If you need a special key for your app, follow the steps to add it / Если подписанная сборка подгрузите или создайте ключи
+   - Click **Build** and watch the progress on the screen / Нажмите "Собрать" и ожидайте
 
-5. **Get Your App**:
+5. **Get Your App**: / Получите ваше приложение
    - When it’s done, your app files (APK or AAB) will be in your project folder, and the folder will open so you can see them!
+   - Когда сборка закончится, откроется проводник с вашим файлом
 
 ---
 
