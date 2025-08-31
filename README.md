@@ -120,13 +120,16 @@ Love Saturn-Builder? Want to add your ideas?
 
 ---
 
-## ☕ Buy Me a Coffee / ☕ Поддержите школьника:)
+## 💰 Buy Me a Coffee / ☕ Поддержите школьника:)
 <div align="left"><img width="246" height="246" alt="qr-code" src="https://github.com/user-attachments/assets/23c8c13a-10dd-4507-b84b-8ea11071c769" />
    
 Support Saturn-Builder! Scan the QR code or click below to buy me a coffee:
 [<a href="https://www.donationalerts.com/r/ewenloy">Buy Me a Coffee</a>](https://www.donationalerts.com/r/ewenloy)
 
 ---
+## ⭐ Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=EwenLoy/Saturn-Builder&type=Date)](https://www.star-history.com/#EwenLoy/Saturn-Builder&Date)
 
 ## 📜 License
 
