@@ -6,6 +6,7 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/EwenLoy/Saturn-Builder) ![GitHub downloads](https://img.shields.io/github/downloads/EwenLoy/Saturn-Builder/total) ![Platform](https://img.shields.io/badge/platform-Windows%2010%2F11-blue)
    
 <div align="left">
+   
 ## 📖 What is Saturn-Builder? / Что это?
 <div align="left"> Saturn-Builder is a friendly app made with Python that helps you build Android apps without complicated setup. It downloads and installs everything you need (like special tools) on its own. Whether you're new to app-making or have some experience, this tool makes it simple to create your own apps for Android!
 <br>
@@ -35,6 +36,7 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 3. Double-click the file to install and open the app.
 
 > **Tip**: Make sure you have about 1 GB of free space on your computer for the tools.
+> > **Совет**: Убедитесь, что у вас достаточно свободного места на диске (~1 GB).
 
 ---
 
