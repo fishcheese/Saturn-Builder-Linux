@@ -71,6 +71,23 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 5. **Get Your App**: / Получите ваше приложение
    - When it’s done, your app files (APK or AAB) will be in your project folder, and the folder will open so you can see them!
    - Когда сборка закончится, откроется проводник с вашим файлом
+## 🚨Possible problems / Возможные проблемы
+ **Убедитесь, что у вас НЕ ИСПОЛЬЗУЕТСЯ КИРИЛЛИЦА (РУС БУКВЫ) в проекте! Иначе получите ошибку:**
+**Make sure that you DO NOT USE CYRILLIC LETTERS in your project! Otherwise you will get an error:**
+>[19:06:24] ❌ Command finished with code 1
+
+>[19:06:24] ❌ Error: Cordova build failed with code 1
+
+>[19:06:24] Traceback (most recent call last):
+ 
+>> File "main.py", line 1902, in _build_thread
+
+>>File "main.py", line 1966, in _build_cordova
+
+>>Exception: Cordova build failed with code 1
+
+## ✅ Solution: rename all files and names to English, including icons
+## ✅ Решение: переименуйте все файлы и названия на английский, включая значки
 
 ---
 
