@@ -38,13 +38,14 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 > **Tip**: Make sure you have about 1 GB of free space on your computer for the tools.
 > > **Совет**: Убедитесь, что у вас достаточно свободного места на диске (~1 GB).
 
+
 ---
 
 ## 👀 How to use / Как пользоваться
 
 1. **First start**: / Первый запуск
    - After installing, click `Saturn-Builder.exe` to start.
-   - The first time, it will ask to install some tools. Click **Install Dependencies** to get started, or **Skip for Now** if you want to try it later (but you won’t be able to make apps yet).
+   - The first time, it will ask to install some tools. Click  <  <img width="168" height="35" src="https://github.com/user-attachments/assets/f5f4be6c-5338-4e7d-8c2a-49881c8dced2" />  > to get started, or **Skip for Now** if you want to try it later (but you won’t be able to make apps yet).
    - При первом запуске вам будет предложено установить необходимые зависимости (~1GB), однако если вы откажетесь, приложение не будет работать
      
    > **🚨 Важный момент Saturn-Builder.exe должен быть в английской папке!
