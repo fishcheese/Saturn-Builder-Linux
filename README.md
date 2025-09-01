@@ -11,7 +11,7 @@
 <div align="left"> Saturn-Builder is a friendly app made with Python that helps you build Android apps without complicated setup. It downloads and installs everything you need (like special tools) on its own. Whether you're new to app-making or have some experience, this tool makes it simple to create your own apps for Android!
 <br>
 <br>
-<div align="left"> Saturn-Builder - это удобное приложение, созданное на Python, которое поможет вам создавать приложения для Android без сложной настройки. Оно самостоятельно загружает и устанавливает все, что вам нужно (например, специальные инструменты). Независимо от того, новичок вы в создании приложений или у вас есть некоторый опыт, этот инструмент упрощает создание ваших собственных приложений для Android!
+<div align="left"> Saturn-Builder - это удобное приложение, которое поможет вам создавать приложения для Android без сложной настройки. Оно самостоятельно загружает и устанавливает все, что вам нужно (например, специальные инструменты). Независимо от того, новичок вы в создании приложений или у вас есть некоторый опыт, этот инструмент упрощает создание ваших собственных приложений для Android!
 ---
 
 ## 🌟 What Can It Do? / Возможности
@@ -20,7 +20,6 @@
 |--------------------------|--------------------------------------------------|
 | 🛠️ **Easy Setup**        | Automatically installs tools you need (~1 GB).   |
 | 📱 **Make Apps**          | Creates APK or AAB files for your Android apps.  |
-| 📂 **Manage Projects**    | Lets you start new projects or open old ones.    |
 | 🌐 **Language Switch**    | Change the app’s language to English or Russian. |
 | 📜 **Show Progress**      | Shows you what’s happening while building.       |
 | 🖥️ **Simple Interface**   | Easy-to-use screen to control everything.        |
@@ -32,7 +31,7 @@
 Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11 (windows 7 не пробовал, попробуйте если хотите)
 
 1. Visit the [releases page](https://github.com/EwenLoy/Saturn-Builder/releases/). / Просто скачайте exe со страницы релизов
-2. Download the `Saturn-Builder.exe` file (it’s like a setup program).
+2. Download the `Saturn-Builder.exe`.
 3. Double-click the file to install and open the app.
 
 > **Tip**: Make sure you have about 1 GB of free space on your computer for the tools.
@@ -45,7 +44,7 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 
 1. **First start**: / Первый запуск
    - After installing, click `Saturn-Builder.exe` to start.
-   - The first time, it will ask to install some tools. Click  <  <img width="168" height="35" src="https://github.com/user-attachments/assets/f5f4be6c-5338-4e7d-8c2a-49881c8dced2" />  > to get started, or **Skip for Now** if you want to try it later (but you won’t be able to make apps yet).
+   - The first time, it will ask to install some tools. Click  **install dependencies** to get started, or `Skip for Now` if you want to try it later (but you won’t be able to make apps yet).
    - При первом запуске вам будет предложено установить необходимые зависимости (~1GB), однако если вы откажетесь, приложение не будет работать
      
    > **🚨 Важный момент Saturn-Builder.exe должен быть в английской папке!
