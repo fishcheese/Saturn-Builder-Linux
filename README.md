@@ -72,12 +72,13 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 - Signed release APK
 - Signed Android App Bundle
 4. **Build Your App**: / Сборка вашего приложения
-   - If you need a special key for your app, follow the steps to add it / Если подписанная сборка подгрузите или создайте ключи
+   - If you need a special key for your app, follow the steps to add it / Если подписанная сборка, подгрузите или создайте ключи
    - Click **Build** and watch the progress on the screen / Нажмите "Собрать" и ожидайте
 
 5. **Get Your App**: / Получите ваше приложение
    - When it’s done, your app files (APK or AAB) will be in your project folder, and the folder will open so you can see them!
    - Когда сборка закончится, откроется проводник с вашим файлом
+   - 
 ## 🚨Possible problems / Возможные проблемы
  **Убедитесь, что у вас НЕ ИСПОЛЬЗУЕТСЯ КИРИЛЛИЦА (РУС БУКВЫ) в проекте! Иначе получите ошибку:**
  
