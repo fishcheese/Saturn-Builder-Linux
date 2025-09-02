@@ -45,22 +45,23 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
    - After installing, click `Saturn-Builder.exe` to start.
    - The first time, it will ask to install some tools. Click  **install dependencies** to get started, or `Skip for Now` if you want to try it later (but you won’t be able to make apps yet).
    - При первом запуске вам будет предложено установить необходимые зависимости (~1GB), однако если вы откажетесь, приложение не будет работать
-     
-   > **🚨 Важный момент Saturn-Builder.exe должен быть в английской папке!
+    <br>
+
+   > **🚨 Важный момент! Saturn-Builder.exe должен быть в английской папке!
    > При использовании в названии папок русских символов ничего работать не будет!**
    
    > "D:\FOLDER\SaturnBuilder_1.0.exe" ✅
    
    > "D:\пака на русском\SaturnBuilder_1.0.exe" ❌
    
-     <div align="left"><img width="500" height="500" alt="Снимок экрана 2025-08-31 180023" src="https://github.com/user-attachments/assets/c1bd34f4-9203-48d6-8f1c-baeab97fe776" />
+     
 
 
-2. **Pick a Language after installing dependencies**: / выберите язык интерфейса (если по англ не понимаете)
+1. **Pick a Language after installing dependencies**: / выберите язык интерфейса (если по англ не понимаете)
    - Choose English or Russian from a dropdown menu in the app.
    - The app will change its language right away!
 
-3. **Open the Cordova Project (zip)**: / нажмите кнопку загрузить проект (Load project) ваш zip архив Cordova
+2. **Open the Cordova Project (zip)**: / нажмите кнопку загрузить проект (Load project) ваш zip архив Cordova
    - Click **Load Project** to open one you’ve worked on before.
 
 3.1 **Choose build type** / Выберете тип сборки
