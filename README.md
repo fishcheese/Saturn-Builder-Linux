@@ -34,8 +34,7 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 2. Download the `Saturn-Builder.exe`.
 3. Double-click the file to install and open the app.
 
-> **Tip**: Make sure you have about 1 GB of free space on your computer for the tools.
-> > **Совет**: Убедитесь, что у вас достаточно свободного места на диске (~1 GB).
+
 
 
 ---
