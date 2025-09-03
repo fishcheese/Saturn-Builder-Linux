@@ -833,17 +833,8 @@ class MainApp(ctk.CTk):
                 import json
                 json.dump(config_json, f, ensure_ascii=False, indent=2)
             # Create simplistic config.xml for Cordova
-            # Генерируем config.xml с учетом hideSplash
+            # Генерируем config.xml
             splash_prefs = ""
-            if cfg.get("hideSplash"):
-                # Для Cordova/Android 12+: убираем системную анимацию сплэша и фон
-                splash_prefs = (
-                    "\n  <preference name=\"SplashScreenDelay\" value=\"0\" />"
-                    "\n  <preference name=\"AutoHideSplashScreen\" value=\"true\" />"
-                    "\n  <preference name=\"ShowSplashScreen\" value=\"false\" />"
-                    "\n  <preference name=\"AndroidWindowSplashScreenAnimatedIcon\" value=\"@null\" />"
-                    "\n  <preference name=\"AndroidWindowSplashScreenBackground\" value=\"@android:color/transparent\" />"
-                )
             config_xml = f"""
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="{cfg['id']}" version="{cfg['version']}" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
@@ -3946,14 +3937,12 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         self.chk_vibrate = tk.BooleanVar(value=False)
         self.chk_camera = tk.BooleanVar(value=False)
         self.chk_microphone = tk.BooleanVar(value=False)
-        self.chk_hide_splash = tk.BooleanVar(value=False)
         toggles = ctk.CTkFrame(props)
         toggles.pack(fill="x", pady=6)
         ctk.CTkCheckBox(toggles, text="Hide status bar", variable=self.chk_hide_status).pack(anchor="w")
         ctk.CTkCheckBox(toggles, text="Require Vibrate permission", variable=self.chk_vibrate).pack(anchor="w")
         ctk.CTkCheckBox(toggles, text="Require Camera permission", variable=self.chk_camera).pack(anchor="w")
         ctk.CTkCheckBox(toggles, text="Require Microphone permission", variable=self.chk_microphone).pack(anchor="w")
-        ctk.CTkCheckBox(toggles, text="Hide splash screen", variable=self.chk_hide_splash).pack(anchor="w")
 
         # Orientation
         orient_blk = ctk.CTkFrame(right)
@@ -4013,7 +4002,7 @@ class Html5ConfigDialog(ctk.CTkToplevel):
             "permVibrate": self.chk_vibrate.get(),
             "permCamera": self.chk_camera.get(),
             "permMic": self.chk_microphone.get(),
-            "hideSplash": self.chk_hide_splash.get(),
+
             "iconPath": self._icon_path
         }
         try:
