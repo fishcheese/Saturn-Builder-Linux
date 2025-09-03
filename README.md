@@ -27,7 +27,7 @@
 
 Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11 (windows 7 не пробовал, попробуйте если хотите)
 
-1. Visit the [releases page](https://github.com/EwenLoy/Saturn-Builder/releases/). / Просто скачайте exe со страницы релизов
+1. Visit the [releases page](https://github.com/EwenLoy/Saturn-Builder/releases/) / Просто скачайте exe со страницы релизов
 2. Download the `Saturn-Builder.exe`.
 3. Double-click the file to install and open the app.
 
