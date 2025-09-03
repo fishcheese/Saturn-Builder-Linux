@@ -12,7 +12,6 @@
 <br>
 <br>
 <div align="left"> Saturn-Builder - это удобное приложение, которое поможет вам создавать приложения для Android без сложной настройки. Оно самостоятельно загружает и устанавливает все, что вам нужно (например, специальные инструменты). Независимо от того, новичок вы в создании приложений или у вас есть некоторый опыт, этот инструмент упрощает создание ваших собственных приложений для Android!
----
 
 ## 🌟 What Can It Do? / Возможности
 
@@ -24,8 +23,6 @@
 | 📜 **Show Progress**      | Shows you what’s happening while building.       |
 | 🖥️ **Simple Interface**   | Easy-to-use screen to control everything.        |
 
----
-
 ## 🛠️ How to Get Started / Как начать
 
 Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11 (windows 7 не пробовал, попробуйте если хотите)
@@ -33,11 +30,6 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 1. Visit the [releases page](https://github.com/EwenLoy/Saturn-Builder/releases/). / Просто скачайте exe со страницы релизов
 2. Download the `Saturn-Builder.exe`.
 3. Double-click the file to install and open the app.
-
-
-
-
----
 
 ## 👀 How to use / Как пользоваться
 
@@ -54,17 +46,12 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
    
    > "D:\пака на русском\SaturnBuilder_1.0.exe" ❌
    
-     
-
-
 1. **Pick a Language after installing dependencies**: / выберите язык интерфейса (если по англ не понимаете)
    - Choose English or Russian from a dropdown menu in the app.
    - The app will change its language right away!
 
-2. **Open the Cordova Project (zip)**: / нажмите кнопку загрузить проект (Load project) ваш zip архив Cordova
-   - Click **Load Project** to open one you’ve worked on before.
-
-3.1 **Choose build type** / Выберете тип сборки
+2. **Load Cordova Project (zip) / Android Studio Project / HTML5 Project**: / нажмите кнопку загрузить проект (Load project) ваш zip архив Cordova
+3. **Choose build type** / Выберете тип сборки
 - Debug APK
 - Unsigned release APK
 - Unsigned Android App Bundle
@@ -78,7 +65,7 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 5. **Get Your App**: / Получите ваше приложение
    - When it’s done, your app files (APK or AAB) will be in your project folder, and the folder will open so you can see them!
    - Когда сборка закончится, откроется проводник с вашим файлом
-   - 
+
 ## 🚨Possible problems / Возможные проблемы
  **Убедитесь, что у вас НЕ ИСПОЛЬЗУЕТСЯ КИРИЛЛИЦА (РУС БУКВЫ) в проекте! Иначе получите ошибку:**
  
@@ -99,21 +86,6 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
    > "D:\FOLDER\SaturnBuilder_1.0.exe" ✅
    
    > "D:\пака на русском\SaturnBuilder_1.0.exe" ❌
----
-
-## 📸 Pictures / Фото
-
-<img width="1154" height="780" alt="image" src="https://github.com/user-attachments/assets/4c8111c7-e49a-4d87-b07c-9aeff08aab4c" />
-
-## 📸 Construct 3 export options / Тип экспорта для construct 3 (этот полученный файл загружаете в программу)
-
-<img width="450" height="439" alt="image" src="https://github.com/user-attachments/assets/606dd9fd-bee0-475c-8927-a5fc168c2724" /> <img width="480" height="503" alt="image" src="https://github.com/user-attachments/assets/68605654-142e-45d0-992e-c39dc4a64f53" />
-
-
-
-
-
----
 
 ## 🛠️ What It Needs / Что использует
 
@@ -126,27 +98,14 @@ Saturn-Builder downloads these tools automatically:
 
 ❗You’ll need about 1 GB of space for all this❗
 
----
-
-## 🤝 Help Make It Better / Помогите улучшить сервис
-
-Love Saturn-Builder? Want to add your ideas?
-1. Copy the project to your own GitHub (fork it).
-2. Make a new version: `git checkout -b feature/your-idea`.
-3. Send us your changes: [Create PR](https://github.com/EwenLoy/Saturn-Builder/pulls).
-
----
-
 ## 📬 Contact Us / Связь со мной (или нет)
 
 - **GitHub**: [@EwenLoy](https://github.com/EwenLoy)
 - **Email**: ewenloy@gmail.com
 - **Facebook**: Soon
 - **Discord**: Soon
-- **Telegram**: [SaturBuilder](https://t.me/saturnbuilder)
+- **Telegram**: [SaturnBuilder](https://t.me/saturnbuilder)
 - **X**: Soon
-
----
 
 ## 💰 Buy Me a Coffee / ☕ Поддержите школьника:)
 <div align="left"><img width="246" height="246" alt="qr-code" src="https://github.com/user-attachments/assets/23c8c13a-10dd-4507-b84b-8ea11071c769" />
@@ -154,7 +113,6 @@ Love Saturn-Builder? Want to add your ideas?
 Support Saturn-Builder! Scan the QR code or click below to buy me a coffee:
 [<a href="https://www.donationalerts.com/r/ewenloy">Buy Me a Coffee</a>](https://www.donationalerts.com/r/ewenloy)
 
----
 ## ⭐ Star History
 
 [![Star History Chart](https://api.star-history.com/svg?repos=EwenLoy/Saturn-Builder&type=Date)](https://www.star-history.com/#EwenLoy/Saturn-Builder&Date)
