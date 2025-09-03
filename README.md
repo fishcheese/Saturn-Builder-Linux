@@ -105,7 +105,7 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 
 <img width="1154" height="780" alt="image" src="https://github.com/user-attachments/assets/4c8111c7-e49a-4d87-b07c-9aeff08aab4c" />
 
-## 📸 Construct 3 export options / Тип экспорта для construct 3 (этот полученный файл загружаете в программу, данный тип экспорта работает и в БЕСПЛАТНОЙ версии construct)
+## 📸 Construct 3 export options / Тип экспорта для construct 3 (этот полученный файл загружаете в программу)
 
 <img width="450" height="439" alt="image" src="https://github.com/user-attachments/assets/606dd9fd-bee0-475c-8927-a5fc168c2724" /> <img width="480" height="503" alt="image" src="https://github.com/user-attachments/assets/68605654-142e-45d0-992e-c39dc4a64f53" />
 
