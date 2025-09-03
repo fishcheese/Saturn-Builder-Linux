@@ -392,7 +392,12 @@ TRANSLATIONS = {
     "Key password": "Пароль ключа",
     "Project loaded": "Проект загружен",
     "Support Developer": "Поддержать разработчика",
-    "Failed to open link: {error}": "Не удалось открыть ссылку: {error}"
+    "Failed to open link: {error}": "Не удалось открыть ссылку: {error}",
+    "HTML5 project loaded and validated (index.html found)": "Проект HTML5 загружен и валиден (найден index.html)",
+    "gradlew or index.html not found in folder": "В папке не найден gradlew или index.html",
+    "Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew. For HTML5, select a folder with index.html.": "Подсказка: Для Cordova загрузите ZIP с config.xml в корне. Для Android Studio выберите папку с gradlew. Для HTML5 выберите папку с index.html.",
+    "Info": "Информация",
+    "HTML5 projects don't require Android build. Use Cordova or Android Studio if you need APK/AAB.": "HTML5 проекты не требуют Android-сборки. Используйте Cordova или Android Studio, если нужен APK/AAB."
 }
 def translate(template, lang, **kwargs):
     if lang == 'ru' and template in TRANSLATIONS:
@@ -625,7 +630,18 @@ class MainApp(ctk.CTk):
         # Set icon AFTER customtkinter configuration to prevent override
         set_window_icon(self)
         # Directories
-        self.BASE = os.path.abspath(os.getcwd())
+        # Resolve base directory relative to the app/script location (not the current working directory)
+        try:
+            if getattr(sys, 'frozen', False):
+                # Running as a bundled executable
+                _base = os.path.dirname(sys.executable)
+            else:
+                # Running as a script
+                _base = os.path.dirname(os.path.abspath(__file__))
+        except Exception:
+            # Fallback to current working directory
+            _base = os.path.abspath(os.getcwd())
+        self.BASE = _base
         self.DEP_DIR = os.path.join(self.BASE, "dependencies")
         self.PROJ_DIR = os.path.join(self.BASE, "projects")
         self.LOGS_DIR = os.path.join(self.BASE, "logs")
@@ -634,7 +650,7 @@ class MainApp(ctk.CTk):
         safe_makedirs(self.LOGS_DIR)
         # State
         self.lang = 'en'
-        self.project_types_internal = ["Cordova", "Android Studio"]
+        self.project_types_internal = ["Cordova", "Android Studio", "HTML5"]
         self.build_types_internal = [
             "Debug APK",
             "Unsigned Release APK",
@@ -673,6 +689,7 @@ class MainApp(ctk.CTk):
         self.ks_pass_var = tk.StringVar()
         self.key_pass_var = tk.StringVar()
         self.show_pass_var = tk.BooleanVar(value=False)
+        self.html5_pending_config = False
         # UI creation
         self._build_ui()
         self.logger = Logger(self.log_widget, self._get_lang)
@@ -745,6 +762,137 @@ class MainApp(ctk.CTk):
             
         except Exception as e:
             self.logger.log("Failed to show support dialog: {error}", "WARNING", error=str(e))
+    def _open_html5_config_dialog(self):
+        try:
+            Html5ConfigDialog(self, self._apply_html5_config)
+        except Exception as e:
+            self.logger.log("Error: {err}", "ERROR", err=str(e))
+    def _safe_min_api(self, v):
+        return str(v or "24")
+    def _apply_html5_config(self, cfg, icon_img):
+        try:
+            # target project folder already in self.project_path (contains index.html)
+            proj = self.project_path
+            www = os.path.join(proj, "www")
+            safe_makedirs(www)
+            # Move all existing files into www except www itself
+            for item in os.listdir(proj):
+                if item == "www":
+                    continue
+                src = os.path.join(proj, item)
+                dst = os.path.join(www, item)
+                try:
+                    if os.path.isdir(src):
+                        shutil.move(src, dst)
+                    else:
+                        shutil.move(src, os.path.join(www, item))
+                except Exception:
+                    pass
+            # Save icon into www/res and add platform-specific icons for Cordova
+            icons_dir = os.path.join(www, "res")
+            safe_makedirs(icons_dir)
+            icon_rel = None
+            try:
+                if icon_img and Image:
+                    variants = {
+                        "mipmap-mdpi": 48,
+                        "mipmap-hdpi": 72,
+                        "mipmap-xhdpi": 96,
+                        "mipmap-xxhdpi": 144,
+                        "mipmap-xxxhdpi": 192
+                    }
+                    for folder, size in variants.items():
+                        d = os.path.join(icons_dir, folder)
+                        safe_makedirs(d)
+                        p = os.path.join(d, "ic_launcher.png")
+                        icon_img.resize((size,size), Image.Resampling.LANCZOS).save(p, format="PNG")
+                    # основной 128
+                    p128 = os.path.join(icons_dir, "icon-128.png")
+                    icon_img.resize((128,128), Image.Resampling.LANCZOS).save(p128, format="PNG")
+                    icon_rel = os.path.relpath(p128, proj).replace('\\','/')
+            except Exception as _e:
+                self.logger.log("Warning: {warn}", "WARNING", warn=f"Icon generation failed: {_e}")
+            # Create config.json (app metadata)
+            config_json = {
+                "id": cfg["id"],
+                "version": cfg["version"],
+                "versionCode": cfg["versionCode"],
+                "name": cfg["name"],
+                "description": cfg["description"],
+                "whitelist": cfg["whitelist"].split(),
+                "author": cfg["author"],
+                "email": cfg["email"],
+                "website": cfg["website"],
+                "orientation": cfg["orientation"],
+                "fullscreen": cfg["hideStatus"],
+                "permissionTypes": [p for p,flag in (("camera",cfg["permCamera"]),("microphone",cfg["permMic"])) if flag],
+                "icons": ([{"src": icon_rel or "www/icons/icon-128.png", "width":128, "height":128, "density":"xxhdpi"}] if icon_rel else []),
+                "android": {"min": cfg["minApi"], "target": cfg["targetApi"], "engine": "12.0.0"}
+            }
+            with open(os.path.join(proj, "config.json"), "w", encoding="utf-8") as f:
+                import json
+                json.dump(config_json, f, ensure_ascii=False, indent=2)
+            # Create simplistic config.xml for Cordova
+            # Генерируем config.xml с учетом hideSplash
+            splash_prefs = ""
+            if cfg.get("hideSplash"):
+                # Для Cordova/Android 12+: убираем системную анимацию сплэша и фон
+                splash_prefs = (
+                    "\n  <preference name=\"SplashScreenDelay\" value=\"0\" />"
+                    "\n  <preference name=\"AutoHideSplashScreen\" value=\"true\" />"
+                    "\n  <preference name=\"ShowSplashScreen\" value=\"false\" />"
+                    "\n  <preference name=\"AndroidWindowSplashScreenAnimatedIcon\" value=\"@null\" />"
+                    "\n  <preference name=\"AndroidWindowSplashScreenBackground\" value=\"@android:color/transparent\" />"
+                )
+            config_xml = f"""
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="{cfg['id']}" version="{cfg['version']}" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <name>{cfg['name']}</name>
+  <description>{cfg['description']}</description>
+  <author email="{cfg['email']}" href="{cfg['website']}">{cfg['author']}</author>
+  <preference name="Orientation" value="{cfg['orientation']}" />
+  <preference name="Fullscreen" value="{'true' if cfg['hideStatus'] else 'false'}" />
+  {splash_prefs}
+  <platform name="android">
+    <preference name="android-minSdkVersion" value="{cfg['minApi']}" />
+    <preference name="android-targetSdkVersion" value="{cfg['targetApi']}" />
+    <icon density="mdpi" src="www/res/mipmap-mdpi/ic_launcher.png" />
+    <icon density="hdpi" src="www/res/mipmap-hdpi/ic_launcher.png" />
+    <icon density="xhdpi" src="www/res/mipmap-xhdpi/ic_launcher.png" />
+    <icon density="xxhdpi" src="www/res/mipmap-xxhdpi/ic_launcher.png" />
+    <icon density="xxxhdpi" src="www/res/mipmap-xxxhdpi/ic_launcher.png" />
+  </platform>
+  {''.join([f'<allow-navigation href="{u}" />' for u in cfg['whitelist'].split()])}
+</widget>
+""".strip()
+            with open(os.path.join(proj, "config.xml"), "w", encoding="utf-8") as f:
+                f.write(config_xml)
+            # Create package.json minimal
+            package_json = {
+                "name": cfg["name"].lower().replace(" ", "-"),
+                "version": cfg["version"],
+                "private": True,
+                "dependencies": {}
+            }
+            with open(os.path.join(proj, "package.json"), "w", encoding="utf-8") as f:
+                import json
+                json.dump(package_json, f, ensure_ascii=False, indent=2)
+            # Switch project type to Cordova and enable Build
+            # Переключаемся на Cordova только после успешной конфигурации
+            self.project_internal_var.set("Cordova")
+            self.project_display_var.set(self._localize_display("Cordova"))
+            self._rebuild_optionmenus()
+            self.btn_build.configure(state="normal")
+            self.html5_pending_config = False
+            # Прячем кнопку конфигурации
+            try:
+                self.btn_html5_config.pack_forget()
+                self.btn_html5_config_top.pack_forget()
+            except Exception:
+                pass
+            self.logger.log("Project converted to Cordova structure (www, config.xml/json, package.json)", "SUCCESS")
+        except Exception as e:
+            self.logger.log("Error: {err}", "ERROR", err=str(e))
     
         
     def _check_first_run(self):
@@ -859,6 +1007,10 @@ class MainApp(ctk.CTk):
         self.opt_build.pack(side="left", padx=(0, 10))
         self.btn_build = ctk.CTkButton(header, text=self._tr("⚡ Build"), width=160, fg_color="#2ecc71", command=self.start_build, state="disabled")
         self.btn_build.pack(side="left", padx=(0, 10))
+        # Кнопка редактирования конфига (для HTML5)
+        self.btn_html5_config_top = ctk.CTkButton(header, text=self._tr("Edit Config"), width=160, fg_color="#2ecc71", command=self._open_html5_config_dialog)
+        self.btn_html5_config_top.pack(side="left", padx=(0, 10))
+        self.btn_html5_config_top.pack_forget()
         status_frame = ctk.CTkFrame(self, corner_radius=12)
         status_frame.pack(fill="x", padx=pad, pady=(6, 0))
         # Создаем метку для отображения текущей задачи
@@ -984,9 +1136,13 @@ class MainApp(ctk.CTk):
         self.btn_copy_logs.pack(side="left", padx=6)
         self.btn_open_logs = ctk.CTkButton(log_btns, text=self._tr("Open log folder"), width=160, command=self._open_logs_dir)
         self.btn_open_logs.pack(side="left", padx=6)
+        # Кнопка настройки конфигурации для HTML5 проектов
+        self.btn_html5_config = ctk.CTkButton(right, text="Configure HTML5", width=180, fg_color="#2ecc71", hover_color="#27ae60", command=self._open_html5_config_dialog)
+        self.btn_html5_config.pack(anchor="w", padx=8, pady=(4, 8))
+        self.btn_html5_config.pack_forget()
         footer = ctk.CTkFrame(self, corner_radius=12)
         footer.pack(fill="x", padx=pad, pady=(0, pad))
-        self.hint_var = tk.StringVar(value=self._tr("Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew."))
+        self.hint_var = tk.StringVar(value=self._tr("Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew. For HTML5, select a folder with index.html."))
         ctk.CTkLabel(footer, textvariable=self.hint_var).pack(anchor="w", padx=10, pady=8)
         self._rebuild_optionmenus()
         self.project_display_var.trace_add("write", self._on_project_display_var_changed)
@@ -1043,7 +1199,7 @@ class MainApp(ctk.CTk):
                 self.lang_label.configure(text=self._tr("Language"))
             
             # Обновляем подсказку
-            self.hint_var.set(self._tr("Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew."))
+            self.hint_var.set(self._tr("Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew. For HTML5, select a folder with index.html."))
             
             # Обновляем информацию о проекте
             current_project_info = self.project_info_var.get()
@@ -1332,15 +1488,20 @@ class MainApp(ctk.CTk):
                 # Для Android Studio нужно выбрать папку, а не файл
                 path = filedialog.askdirectory(title=self._tr("Select Project Directory"))
             else:
-                # Для Cordova ZIP используем стандартный диалог выбора файла
+                # Для Cordova и HTML5 выбираем ZIP
                 path = filedialog.askopenfilename(
                     title=self._tr("Select Project ZIP"),
                     filetypes=[("ZIP files", "*.zip"), ("All files", "*.*")]
                 )
             if not path:
                 return
-            if self.project_internal_var.get() == "Cordova" and path.endswith(".zip"):
-                self._load_cordova_zip(path)
+            if path.endswith(".zip"):
+                if self.project_internal_var.get() == "Cordova":
+                    self._load_cordova_zip(path)
+                elif self.project_internal_var.get() == "HTML5":
+                    self._load_html5_zip(path)
+                else:
+                    self._load_project_folder(path)
             else:
                 self._load_project_folder(path)
         except Exception as e:
@@ -1390,18 +1551,86 @@ class MainApp(ctk.CTk):
             self.project_info_var.set(self._tr("No project loaded"))
             self.btn_build.configure(state="disabled")
             self._set_progress(0, self._tr("Project loading error"))
+    def _load_html5_zip(self, zip_path):
+        try:
+            self.logger.log("Loading Cordova ZIP: {zip}", "INFO", zip=zip_path)
+            self._set_progress(5, self._tr("Loading ZIP archive..."))
+            archive_name = os.path.splitext(os.path.basename(zip_path))[0]
+            target = os.path.join(self.PROJ_DIR, archive_name)
+            safe_makedirs(target)
+            with zipfile.ZipFile(zip_path, 'r') as zip_ref:
+                total_files = len(zip_ref.namelist())
+                extracted_files = 0
+                for file in zip_ref.namelist():
+                    zip_ref.extract(file, target)
+                    extracted_files += 1
+                    progress = 5 + (extracted_files / total_files * 10)
+                    self._set_progress(progress, self._tr("Extracting ZIP archive... {percent}%", percent=int(extracted_files / total_files * 100)))
+            # Flatten if single root dir containing index.html
+            inner_dirs = [d for d in os.listdir(target) if os.path.isdir(os.path.join(target, d))]
+            if len(inner_dirs) == 1 and os.path.exists(os.path.join(target, inner_dirs[0], "index.html")):
+                inner = os.path.join(target, inner_dirs[0])
+                for item in os.listdir(inner):
+                    shutil.move(os.path.join(inner, item), target)
+                shutil.rmtree(inner)
+                self.logger.log("Flattening inner directory {inner} → {dir}", "INFO", inner=inner, dir=target)
+                self._set_progress(20, self._tr("Preparing project..."))
+            self.project_path = target
+            if os.path.exists(os.path.join(target, "index.html")):
+                self.project_loaded = True
+                self.project_info_var.set(f"{self._tr('Project loaded')}: {target}")
+                # Блокируем сборку до конфигурации проекта
+                self.btn_build.configure(state="disabled")
+                self.html5_pending_config = True
+                # Показываем кнопку «Configure HTML5»
+                try:
+                    self.btn_html5_config.pack_configure(anchor="w", padx=8, pady=(4,8))
+                    self.btn_html5_config_top.pack_configure()
+                except Exception:
+                    pass
+                self.logger.log("HTML5 project loaded and validated (index.html found)", "SUCCESS")
+                self._set_progress(25, self._tr("Project ready for build"))
+                # Открываем окно конфигурации HTML5 → Cordova
+                self.after(100, lambda: self._open_html5_config_dialog())
+            else:
+                self.logger.log("Error: {err}", "ERROR", err="index.html not found in ZIP")
+                self.project_loaded = False
+                self.project_info_var.set(self._tr("No project loaded"))
+                self.btn_build.configure(state="disabled")
+                self._set_progress(0, self._tr("Project loading error"))
+        except Exception as e:
+            self.logger.log("Error: {err}", "ERROR", err=str(e))
+            self.logger.raw(traceback.format_exc())
+            self.project_loaded = False
+            self.project_info_var.set(self._tr("No project loaded"))
+            self.btn_build.configure(state="disabled")
+            self._set_progress(0, self._tr("Project loading error"))
     def _load_project_folder(self, folder):
         try:
             self.project_path = folder
             gradlew = os.path.join(folder, "gradlew.bat" if platform.system() == "Windows" else "gradlew")
+            index_html = os.path.join(folder, "index.html")
             if os.path.exists(gradlew):
                 self.project_loaded = True
                 self.project_info_var.set(f"{self._tr('Project loaded')}: {folder}")
                 self.btn_build.configure(state="normal")
                 self.logger.log("Android Studio project loaded and validated (gradlew found)", "SUCCESS")
                 self._set_progress(25, self._tr("Project ready for build"))
+            elif os.path.exists(index_html):
+                # HTML5 project detected
+                self.project_loaded = True
+                self.project_info_var.set(f"{self._tr('Project loaded')}: {folder}")
+                self.btn_build.configure(state="disabled")
+                self.html5_pending_config = True
+                try:
+                    self.btn_html5_config.pack_configure(anchor="w", padx=8, pady=(4,8))
+                    self.btn_html5_config_top.pack_configure()
+                except Exception:
+                    pass
+                self.logger.log("HTML5 project loaded and validated (index.html found)", "SUCCESS")
+                self._set_progress(25, self._tr("Project ready for build"))
             else:
-                self.logger.log("Error: {err}", "ERROR", err="gradlew not found in folder")
+                self.logger.log("Error: {err}", "ERROR", err="gradlew or index.html not found in folder")
                 self.project_loaded = False
                 self.project_info_var.set(self._tr("No project loaded"))
                 self.btn_build.configure(state="disabled")
@@ -1975,9 +2204,18 @@ class MainApp(ctk.CTk):
             project_type_internal = self.project_internal_var.get()
             self.logger.log("Build started: {mode} for {ptype}", "INFO", mode=mode_internal, ptype=project_type_internal)
             self._set_progress(2, self._tr("Starting build..."))
+            # Если пользователь оставил тип HTML5, но проект ожидает конфигурации — блокируем build и подсказываем
+            if project_type_internal == "HTML5":
+                if self.html5_pending_config:
+                    self._show_message(self._tr("Info"), self._tr("Complete HTML5 config (Edit Config) to enable build."), "info")
+                    self.logger.log("Build blocked: complete HTML5 config first", "WARNING")
+                    return
+                else:
+                    self._show_message(self._tr("Info"), self._tr("HTML5 projects don't require Android build. Use Cordova or Android Studio if you need APK/AAB."), "info")
+                    return
             if project_type_internal == "Cordova":
                 self._build_cordova(mode_internal)
-            else:
+            elif project_type_internal == "Android Studio":
                 self._build_android_studio(mode_internal)
             self.logger.log("Build process completed (thread exit)", "INFO")
         except Exception as e:
@@ -2167,7 +2405,16 @@ class MainApp(ctk.CTk):
             aab_files = [f for f in artifacts if f.endswith('.aab')]
             if not aab_files:
                 self.logger.log("Warning: No AAB files found for {mode} mode", "WARNING", mode=mode_internal)
-        if any(mode_internal.startswith(s) for s in ("Signed",)):
+        # Подпись артефактов:
+        # - Любой режим, начинающийся с "Signed"
+        # - А ТАКЖЕ "Unsigned Release APK" (чтобы сделать APK устанавливаемым по умолчанию)
+        if any(mode_internal.startswith(s) for s in ("Signed",)) or mode_internal == "Unsigned Release APK":
+            # Если пользователь выбрал "Unsigned Release APK", но не настроил keystore — создаем автоматический
+            if mode_internal == "Unsigned Release APK" and not self.keystore_info.get("path"):
+                try:
+                    self._create_auto_keystore(cwd)
+                except Exception:
+                    pass
             if not self.keystore_info.get("path"):
                 raise Exception("Keystore not configured for signed build")
             self._sign_and_align(artifacts)
@@ -2525,7 +2772,16 @@ class MainApp(ctk.CTk):
             if not aab_files:
                 self.logger.log("Warning: No AAB files found for AAB mode", "WARNING")
         self._set_progress(80, self._tr("Artifacts found"))
-        if any(mode_internal.startswith(s) for s in ("Signed",)):
+        # Подпись артефактов:
+        # - Любой режим, начинающийся с "Signed"
+        # - А ТАКЖЕ "Unsigned Release APK" (чтобы сделать APK устанавливаемым по умолчанию)
+        if any(mode_internal.startswith(s) for s in ("Signed",)) or mode_internal == "Unsigned Release APK":
+            # Если пользователь выбрал "Unsigned Release APK", но не настроил keystore — создаем автоматический
+            if mode_internal == "Unsigned Release APK" and not self.keystore_info.get("path"):
+                try:
+                    self._create_auto_keystore(cwd)
+                except Exception:
+                    pass
             if not self.keystore_info.get("path"):
                 raise Exception("Keystore not configured for signed build")
             if not artifacts:
@@ -3563,6 +3819,207 @@ Without dependencies, you won't be able to build projects, but you can still exp
             command=self.destroy
         )
         ok_btn.pack(pady=(0, 20))
+
+class Html5ConfigDialog(ctk.CTkToplevel):
+    def __init__(self, parent, on_confirm):
+        super().__init__(parent)
+        self.parent = parent
+        self.on_confirm = on_confirm
+        self.title("HTML5 App Settings")
+        self.geometry("780x700")
+        self.resizable(False, False)
+        self._icon_image = None
+        self._icon_path = None
+        # Center window
+        self.update_idletasks()
+        x = (self.winfo_screenwidth() // 2) - (780 // 2)
+        y = (self.winfo_screenheight() // 2) - (700 // 2)
+        self.geometry(f"780x700+{x}+{y}")
+        # UI
+        self._build_ui()
+        set_window_icon(self)
+        # Не делаем modal grab, чтобы окно можно было свернуть
+        self.focus_set()
+
+    def _build_ui(self):
+        pad = 10
+        root = ctk.CTkFrame(self)
+        root.pack(fill="both", expand=True, padx=16, pady=16)
+
+        header = ctk.CTkLabel(root, text="Configure HTML5 App", font=ctk.CTkFont(size=18, weight="bold"))
+        header.pack(anchor="w", pady=(0, 10))
+
+        body = ctk.CTkFrame(root)
+        body.pack(fill="both", expand=True)
+
+        left = ctk.CTkFrame(body)
+        left.pack(side="left", fill="y", padx=(0, 8), pady=8)
+        # Прокручиваемая правая часть
+        right = ctk.CTkScrollableFrame(body)
+        right.pack(side="left", fill="both", expand=True, padx=(8, 0), pady=8)
+
+        # Icon selector with preview
+        ctk.CTkLabel(left, text="App Icon", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=pad, pady=(pad, 4))
+        self.icon_preview = ctk.CTkLabel(left, text="128x128", width=160, height=160, fg_color="#1f1f1f")
+        self.icon_preview.pack(padx=pad, pady=(0, 8))
+        ctk.CTkButton(left, text="Upload Icon", command=self._choose_icon).pack(padx=pad, pady=(0, 8))
+        # Default preview from embedded base64_qrico
+        try:
+            if Image and ImageTk and isinstance(base64_qrico, str) and base64_qrico:
+                import base64, io
+                _data = base64.b64decode(base64_qrico.strip())
+                _img = Image.open(io.BytesIO(_data)).convert("RGBA")
+                _img = _img.resize((128, 128), Image.Resampling.LANCZOS)
+                _photo = ImageTk.PhotoImage(_img)
+                self.icon_preview.configure(image=_photo, text="")
+                self.icon_preview.image = _photo
+                self._icon_image = _img
+        except Exception:
+            pass
+
+        # General settings
+        blk = ctk.CTkFrame(right)
+        blk.pack(fill="x", padx=pad, pady=(pad, 6))
+        ctk.CTkLabel(blk, text="General", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+
+        form = ctk.CTkFrame(blk)
+        form.pack(fill="x", padx=8, pady=(0, 8))
+
+        def row(label):
+            fr = ctk.CTkFrame(form)
+            fr.pack(fill="x", pady=4)
+            ctk.CTkLabel(fr, text=label, width=160, anchor="w").pack(side="left")
+            ent = ctk.CTkEntry(fr)
+            ent.pack(side="left", fill="x", expand=True)
+            return ent
+
+        self.f_id = row("App ID (e.g., com.app.id)")
+        self.f_id.insert(0, "COM.COMPANY.NAME")
+        self.f_name = row("App Name")
+        self.f_name.insert(0, "Smart Home Assistant")
+        self.f_desc = row("Description")
+        self.f_desc.insert(0, "MADE WITH SATURN BUILDER! FREE FOR EVERYONE")
+        self.f_version = row("Version (x.y.z)")
+        self.f_version.insert(0, "1.0.0.0")
+        self.f_version_code = row("Android version code")
+        self.f_version_code.insert(0, "1000000")
+        self.f_author = row("Author")
+        self.f_author.insert(0, "EWENLOY")
+        self.f_email = row("Email")
+        self.f_email.insert(0, "EWENLOY@GMAIL.COM")
+        self.f_website = row("Website")
+        self.f_website.insert(0, "https://github.com/EwenLoy/Saturn-Builder/")
+
+        # Min/Target versions & properties
+        props = ctk.CTkFrame(right)
+        props.pack(fill="x", padx=pad, pady=(6, 6))
+        ctk.CTkLabel(props, text="Android Versions", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+
+        versions = [
+            ("7.0+ (Nougat)", "24"), ("8.0+ (Oreo)", "26"), ("9.0+ (Pie)", "28"),
+            ("10+ (Q)", "29"), ("11+ (R)", "30"), ("12+ (S)", "31"), ("13+ (T)", "33"), ("14+ (U)", "34")
+        ]
+        self.min_display = tk.StringVar(value=versions[0][0])
+        self.min_value = versions[0][1]
+        def on_min_change(val):
+            for d,v in versions:
+                if d == val:
+                    self.min_value = v
+                    break
+        rowv = ctk.CTkFrame(props)
+        rowv.pack(fill="x", pady=4)
+        ctk.CTkLabel(rowv, text="Min. version", width=160, anchor="w").pack(side="left")
+        ctk.CTkOptionMenu(rowv, values=[d for d,_ in versions], variable=self.min_display, command=on_min_change, width=220).pack(side="left")
+        ctk.CTkLabel(props, text="Target version: Android 14 (API level 34)").pack(anchor="w", padx=8, pady=(4, 8))
+
+        # Properties (whitelist, toggles)
+        ctk.CTkLabel(props, text="Properties", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        prow = ctk.CTkFrame(props)
+        prow.pack(fill="x", pady=4)
+        ctk.CTkLabel(prow, text="URL whitelist", width=160, anchor="w").pack(side="left")
+        self.f_whitelist = ctk.CTkEntry(prow)
+        self.f_whitelist.insert(0, "http://*/* https://*/*")
+        self.f_whitelist.pack(side="left", fill="x", expand=True)
+
+        # toggles
+        self.chk_hide_status = tk.BooleanVar(value=False)
+        self.chk_vibrate = tk.BooleanVar(value=False)
+        self.chk_camera = tk.BooleanVar(value=False)
+        self.chk_microphone = tk.BooleanVar(value=False)
+        self.chk_hide_splash = tk.BooleanVar(value=False)
+        toggles = ctk.CTkFrame(props)
+        toggles.pack(fill="x", pady=6)
+        ctk.CTkCheckBox(toggles, text="Hide status bar", variable=self.chk_hide_status).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text="Require Vibrate permission", variable=self.chk_vibrate).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text="Require Camera permission", variable=self.chk_camera).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text="Require Microphone permission", variable=self.chk_microphone).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text="Hide splash screen", variable=self.chk_hide_splash).pack(anchor="w")
+
+        # Orientation
+        orient_blk = ctk.CTkFrame(right)
+        orient_blk.pack(fill="x", padx=pad, pady=(6, 6))
+        ctk.CTkLabel(orient_blk, text="Orientation", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        self.orientation = tk.StringVar(value="portrait")
+        orow = ctk.CTkFrame(orient_blk)
+        orow.pack(fill="x", pady=4)
+        ctk.CTkRadioButton(orow, text="Portrait", variable=self.orientation, value="portrait").pack(side="left", padx=8)
+        ctk.CTkRadioButton(orow, text="Landscape", variable=self.orientation, value="landscape").pack(side="left", padx=8)
+
+        # Footer buttons
+        footer = ctk.CTkFrame(root)
+        footer.pack(fill="x", padx=pad, pady=(8, 0))
+        ctk.CTkButton(footer, text="Cancel", command=self.destroy, width=120).pack(side="right", padx=6)
+        ctk.CTkButton(footer, text="Confirm", command=self._confirm, width=160, fg_color="#2ecc71", hover_color="#27ae60").pack(side="right", padx=6)
+
+    def _choose_icon(self):
+        path = filedialog.askopenfilename(title="Select icon image", filetypes=[("Images", "*.png;*.jpg;*.jpeg;*.ico"), ("All files", "*.*")])
+        if not path:
+            return
+        try:
+            if Image and ImageTk:
+                img = Image.open(path)
+                img = img.resize((128, 128), Image.Resampling.LANCZOS)
+                photo = ImageTk.PhotoImage(img)
+                self.icon_preview.configure(image=photo, text="")
+                self.icon_preview.image = photo
+                self._icon_image = img
+                self._icon_path = path
+                # Вернуть окно настроек на передний план после выбора файла
+                try:
+                    self.lift()
+                    self.focus_force()
+                    self.attributes('-topmost', True)
+                    self.after(200, lambda: self.attributes('-topmost', False))
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    def _confirm(self):
+        data = {
+            "id": self.f_id.get().strip() or "com.example.app",
+            "name": self.f_name.get().strip() or "My App",
+            "description": self.f_desc.get().strip() or "",
+            "version": self.f_version.get().strip() or "1.0.0",
+            "versionCode": self.f_version_code.get().strip() or "1",
+            "author": self.f_author.get().strip() or "",
+            "email": self.f_email.get().strip() or "",
+            "website": self.f_website.get().strip() or "",
+            "whitelist": self.f_whitelist.get().strip() or "http://*/* https://*/*",
+            "minApi": self.parent._safe_min_api(self.min_value),
+            "targetApi": "34",
+            "orientation": self.orientation.get(),
+            "hideStatus": self.chk_hide_status.get(),
+            "permVibrate": self.chk_vibrate.get(),
+            "permCamera": self.chk_camera.get(),
+            "permMic": self.chk_microphone.get(),
+            "hideSplash": self.chk_hide_splash.get(),
+            "iconPath": self._icon_path
+        }
+        try:
+            self.on_confirm(data, self._icon_image)
+        finally:
+            self.destroy()
 
 def set_window_icon(window):
     """Helper function to set icon for customtkinter windows using BASE64"""
