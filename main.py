@@ -397,7 +397,42 @@ TRANSLATIONS = {
     "gradlew or index.html not found in folder": "В папке не найден gradlew или index.html",
     "Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew. For HTML5, select a folder with index.html.": "Подсказка: Для Cordova загрузите ZIP с config.xml в корне. Для Android Studio выберите папку с gradlew. Для HTML5 выберите папку с index.html.",
     "Info": "Информация",
-    "HTML5 projects don't require Android build. Use Cordova or Android Studio if you need APK/AAB.": "HTML5 проекты не требуют Android-сборки. Используйте Cordova или Android Studio, если нужен APK/AAB."
+    "HTML5 projects don't require Android build. Use Cordova or Android Studio if you need APK/AAB.": "HTML5 проекты не требуют Android-сборки. Используйте Cordova или Android Studio, если нужен APK/AAB.",
+    # HTML5 settings dialog
+    "Configure HTML5": "Настроить HTML5",
+    "Edit Config": "Редактировать конфиг",
+    "HTML5 App Settings": "Настройки HTML5 приложения",
+    "Configure HTML5 App": "Настройка HTML5 приложения",
+    "App Icon": "Иконка приложения",
+    "Upload Icon": "Загрузить иконку",
+    "Splash Icon": "Иконка заставки",
+    "Upload Splash": "Загрузить заставку",
+    "General": "Общие",
+    "App ID (e.g., com.app.id)": "ID приложения (например, com.app.id)",
+    "App Name": "Название приложения",
+    "Description": "Описание",
+    "Version (x.y.z)": "Версия (x.y.z)",
+    "Android version code": "Код версии Android",
+    "Author": "Автор",
+    "Email": "Email",
+    "Website": "Сайт",
+    "Android Versions": "Версии Android",
+    "Min. version": "Мин. версия",
+    "Target version: Android 14 (API level 34)": "Целевая версия: Android 14 (API уровень 34)",
+    "Properties": "Свойства",
+    "URL whitelist": "Белый список URL",
+    "Hide status bar": "Скрыть статус-бар",
+    "Require Vibrate permission": "Требовать разрешение на вибрацию",
+    "Require Camera permission": "Требовать разрешение на камеру",
+    "Require Microphone permission": "Требовать разрешение на микрофон",
+    "Orientation": "Ориентация",
+    "Portrait": "Портретная",
+    "Landscape": "Альбомная",
+    "Splash Screen": "Заставка",
+    "Background color": "Цвет фона",
+    "Pick": "Выбрать",
+    "Select icon image": "Выберите изображение иконки",
+    "Select splash image": "Выберите изображение заставки"
 }
 def translate(template, lang, **kwargs):
     if lang == 'ru' and template in TRANSLATIONS:
@@ -609,13 +644,6 @@ class CustomMessageBox(ctk.CTkToplevel):
     def _button_clicked(self, button_text):
         self.result = button_text
         self.destroy()
-        
-
-
-
-
-
-
 # ------------------------
 # Main Application
 # ------------------------
@@ -1000,7 +1028,7 @@ class MainApp(ctk.CTk):
         self.btn_build.pack(side="left", padx=(0, 10))
         # Кнопка редактирования конфига (для HTML5)
         self.btn_html5_config_top = ctk.CTkButton(header, text=self._tr("Edit Config"), width=160, fg_color="#2ecc71", command=self._open_html5_config_dialog)
-        self.btn_html5_config_top.pack(side="left", padx=(0, 10))
+        self.btn_html5_config_top.pack(side="left", padx=(3, 3))
         self.btn_html5_config_top.pack_forget()
         status_frame = ctk.CTkFrame(self, corner_radius=12)
         status_frame.pack(fill="x", padx=pad, pady=(6, 0))
@@ -1087,9 +1115,7 @@ class MainApp(ctk.CTk):
         man_controls_row2.pack(fill="x", padx=8, pady=(0, 8))
         self.btn_delete_projects = ctk.CTkButton(man_controls_row2, text=self._tr("Delete all project folders"), width=230, command=self._delete_project_folders, fg_color="#e74c3c")
         self.btn_delete_projects.pack(side="left", padx=6, pady=6)
-        
 
-        
         # Language section moved to second row, right side after reinstall button
         lang_frame = ctk.CTkFrame(man_controls_row2, corner_radius=6)
         lang_frame.pack(side="right", padx=6, pady=6)
@@ -1128,7 +1154,7 @@ class MainApp(ctk.CTk):
         self.btn_open_logs = ctk.CTkButton(log_btns, text=self._tr("Open log folder"), width=160, command=self._open_logs_dir)
         self.btn_open_logs.pack(side="left", padx=6)
         # Кнопка настройки конфигурации для HTML5 проектов
-        self.btn_html5_config = ctk.CTkButton(right, text="Configure HTML5", width=180, fg_color="#2ecc71", hover_color="#27ae60", command=self._open_html5_config_dialog)
+        self.btn_html5_config = ctk.CTkButton(right, text=self._tr("Configure HTML5"), width=180, fg_color="#2ecc71", hover_color="#27ae60", command=self._open_html5_config_dialog)
         self.btn_html5_config.pack(anchor="w", padx=8, pady=(4, 8))
         self.btn_html5_config.pack_forget()
         footer = ctk.CTkFrame(self, corner_radius=12)
@@ -1172,6 +1198,10 @@ class MainApp(ctk.CTk):
             # Обновляем заголовки и кнопки
             self.btn_load.configure(text=f"📂 {self._tr('Load Project')}")
             self.btn_build.configure(text=self._tr("⚡ Build"))
+            if hasattr(self, 'btn_html5_config_top'):
+                self.btn_html5_config_top.configure(text=self._tr("Edit Config"))
+            if hasattr(self, 'btn_html5_config'):
+                self.btn_html5_config.configure(text=self._tr("Configure HTML5"))
             self.lbl_manual.configure(text=self._tr("Manual Actions"))
             self.btn_open_deps.configure(text=self._tr("Open dependencies folder"))
             self.btn_recheck.configure(text=self._tr("Re-check deps"))
@@ -1575,8 +1605,11 @@ class MainApp(ctk.CTk):
                 self.html5_pending_config = True
                 # Показываем кнопку «Configure HTML5»
                 try:
+                    # Ensure buttons are shown with correct relative placement
                     self.btn_html5_config.pack_configure(anchor="w", padx=8, pady=(4,8))
-                    self.btn_html5_config_top.pack_configure()
+                    # Always place top button 50px to the right of Build button
+                    self.btn_html5_config_top.pack_forget()
+                    self.btn_html5_config_top.pack(in_=self.winfo_children()[0], side="left", after=self.btn_build, padx=(3, 3))
                 except Exception:
                     pass
                 self.logger.log("HTML5 project loaded and validated (index.html found)", "SUCCESS")
@@ -1615,7 +1648,8 @@ class MainApp(ctk.CTk):
                 self.html5_pending_config = True
                 try:
                     self.btn_html5_config.pack_configure(anchor="w", padx=8, pady=(4,8))
-                    self.btn_html5_config_top.pack_configure()
+                    self.btn_html5_config_top.pack_forget()
+                    self.btn_html5_config_top.pack(in_=self.winfo_children()[0], side="left", after=self.btn_build, padx=(50, 10))
                 except Exception:
                     pass
                 self.logger.log("HTML5 project loaded and validated (index.html found)", "SUCCESS")
@@ -2226,6 +2260,56 @@ class MainApp(ctk.CTk):
         cordova_cmd = cordova_exe
         self.logger.log("Using Cordova command: {cmd}", "INFO", cmd=cordova_cmd)
         cwd = self.project_path
+
+        # Normalize config.xml to ensure splash/icon preferences and files are present
+        try:
+            self._ensure_splash_icon_config(cwd)
+        except Exception as e:
+            self.logger.log("Warning: {warn}", "WARNING", warn=f"Failed to normalize config: {e}")
+
+        # If resources were updated, force platform refresh to regenerate icons/splash
+        try:
+            import json
+            marker = os.path.join(cwd, '.cordova_assets.json')
+            need_refresh = False
+            if os.path.exists(marker):
+                try:
+                    with open(marker, 'r', encoding='utf-8') as f:
+                        st = json.load(f)
+                    need_refresh = bool(st.get('pendingResourceUpdate'))
+                except Exception:
+                    need_refresh = True
+            if need_refresh:
+                platforms_dir = os.path.join(cwd, 'platforms')
+                android_platform_dir = os.path.join(platforms_dir, 'android')
+                if os.path.exists(android_platform_dir):
+                    try:
+                        shutil.rmtree(android_platform_dir)
+                        self.logger.log("Removed Android platform to refresh resources", "INFO")
+                    except Exception as e:
+                        self.logger.log("Warning: Could not remove platform for refresh: {error}", "WARNING", error=str(e))
+                # try to run cordova-res if present to generate density-specific assets
+                try:
+                    node_exe = os.path.join(node_dir, "node.exe" if platform.system() == "Windows" else "bin/node")
+                    npm_cli = ensure_npm_cli(node_dir, self.logger)
+                    # install cordova-res locally (no-save)
+                    if os.path.exists(node_exe) and os.path.exists(npm_cli):
+                        self.logger.log("Installing cordova-res tool...", "INFO")
+                        self._run_and_stream([node_exe, npm_cli, "install", "cordova-res@latest", "--no-save"], cwd=node_dir)
+                        cordova_res_bin = os.path.join(node_dir, "node_modules", ".bin", "cordova-res.cmd" if platform.system()=="Windows" else "cordova-res")
+                        if os.path.exists(cordova_res_bin):
+                            self.logger.log("Running cordova-res to generate resources...", "INFO")
+                            self._run_and_stream([cordova_res_bin, "android", "--skip-config"], cwd=cwd)
+                except Exception as e:
+                    self.logger.log("Warning: cordova-res failed: {error}", "WARNING", error=str(e))
+                # Clear flag
+                try:
+                    with open(marker, 'w', encoding='utf-8') as f:
+                        json.dump({'pendingResourceUpdate': False}, f)
+                except Exception:
+                    pass
+        except Exception:
+            pass
 
         # Автоматически создаем build.json перед сборкой
         self._set_progress(15, self._tr("Creating build configuration..."))
@@ -3246,19 +3330,175 @@ class MainApp(ctk.CTk):
             self.logger.log("Error: {err}", "ERROR", err=str(e))
             self.logger.raw(traceback.format_exc())
 
+    def _diagnose_splash(self):
+        """Проверка применимости иконок и сплэш-скрина для текущего проекта."""
+        try:
+            proj = getattr(self, 'project_path', None)
+            if not proj or not os.path.exists(proj):
+                self.logger.log("Error: {err}", "ERROR", err="Project not loaded")
+                return
+            self.logger.log("Diagnostics for project: {path}", "INFO", path=proj)
+            # Check files presence
+            to_check = [
+                os.path.join(proj, 'www', 'icons', 'icon-128.png'),
+                os.path.join(proj, 'www', 'icons', 'icon-129.png'),
+                os.path.join(proj, 'resources', 'icon.png'),
+                os.path.join(proj, 'resources', 'splash.png'),
+                os.path.join(proj, 'icon.png'),
+                os.path.join(proj, 'splash_128.png'),
+            ]
+            for p in to_check:
+                self.logger.log(("Found: {name}" if os.path.exists(p) else "Missing: {name}"), "INFO" if os.path.exists(p) else "WARNING", name=p)
+            # Inspect config.xml
+            cfg_xml = os.path.join(proj, 'config.xml')
+            if os.path.exists(cfg_xml):
+                try:
+                    import xml.etree.ElementTree as ET
+                    tree = ET.parse(cfg_xml)
+                    root = tree.getroot()
+                    # log preferences
+                    for pref in root.findall('preference'):
+                        n = pref.get('name')
+                        if n and ("Splash" in n or "AndroidWindowSplash" in n):
+                            self.logger.log("config.xml preference: {name}={value}", "DEBUG", name=n, value=pref.get('value'))
+                    # android platform
+                    for p in root.findall('platform'):
+                        if p.get('name') == 'android':
+                            for ic in p.findall('icon'):
+                                self.logger.log("android icon: {src}", "DEBUG", src=ic.get('src'))
+                            for sp in p.findall('splash'):
+                                self.logger.log("android splash: {src}", "DEBUG", src=sp.get('src'))
+                except Exception as e:
+                    self.logger.log("Error: {err}", "ERROR", err=f"Failed to parse config.xml: {e}")
+            else:
+                self.logger.log("Warning: {warn}", "WARNING", warn="config.xml not found")
+            # Inspect generated platform res
+            plat_res = os.path.join(proj, 'platforms', 'android', 'app', 'src', 'main', 'res')
+            if os.path.exists(plat_res):
+                # look for splash drawables and mipmap icons
+                hits = []
+                for root_dir, _, files in os.walk(plat_res):
+                    for f in files:
+                        if f.lower().startswith(('splash', 'launch_background')) or f.lower().startswith(('ic_launcher', 'icon')):
+                            hits.append(os.path.join(root_dir, f))
+                if hits:
+                    self.logger.log("Generated res files:", "INFO")
+                    for h in hits[:50]:
+                        self.logger.log("  {path}", "DEBUG", path=h)
+                else:
+                    self.logger.log("Warning: {warn}", "WARNING", warn="No generated res files found under platforms/android/app/src/main/res")
+            else:
+                self.logger.log("Warning: {warn}", "WARNING", warn="Android platform res folder not found; rebuild will recreate")
+        except Exception as e:
+            self.logger.log("Error: {err}", "ERROR", err=str(e))
+            self.logger.raw(traceback.format_exc())
 
-
-
-
-
-
-
-
-
-
-
-
-
+    def _ensure_splash_icon_config(self, proj):
+        """Ensure files and config.xml are aligned to use www/icons/icon-128.png and icon-129.png."""
+        try:
+            # Ensure target files exist by copying from available sources
+            www_icons = os.path.join(proj, 'www', 'icons')
+            os.makedirs(www_icons, exist_ok=True)
+            # pick a source for icon (prefer resources/icon.png, fallback to existing in www/icons)
+            candidates_icon = [
+                os.path.join(proj, 'resources', 'icon.png'),
+                os.path.join(www_icons, 'icon-129.png'),
+                os.path.join(proj, 'icon.png')
+            ]
+            src_icon = next((p for p in candidates_icon if os.path.exists(p)), None)
+            if src_icon:
+                try:
+                    shutil.copyfile(src_icon, os.path.join(www_icons, 'icon-129.png'))
+                except Exception:
+                    pass
+            # pick a source for splash (prefer resources/splash.png, fallback to existing in www/icons)
+            candidates_splash = [
+                os.path.join(proj, 'resources', 'splash.png'),
+                os.path.join(www_icons, 'icon-128.png'),
+                os.path.join(proj, 'splash_128.png')
+            ]
+            src_splash = next((p for p in candidates_splash if os.path.exists(p)), None)
+            if src_splash:
+                try:
+                    shutil.copyfile(src_splash, os.path.join(www_icons, 'icon-128.png'))
+                except Exception:
+                    pass
+            # edit config.xml
+            cfg_xml = os.path.join(proj, 'config.xml')
+            import xml.etree.ElementTree as ET
+            if os.path.exists(cfg_xml):
+                try:
+                    tree = ET.parse(cfg_xml)
+                    root = tree.getroot()
+                except Exception:
+                    root = ET.Element('widget')
+                    tree = ET.ElementTree(root)
+            else:
+                root = ET.Element('widget')
+                tree = ET.ElementTree(root)
+            # strip namespaces from all tags to avoid ns0:widget issue
+            def _strip_ns(elem):
+                if '}' in elem.tag:
+                    elem.tag = elem.tag.split('}', 1)[1]
+                if ':' in elem.tag:
+                    elem.tag = elem.tag.split(':', 1)[-1]
+                for child in list(elem):
+                    _strip_ns(child)
+            _strip_ns(root)
+            # ensure root tag is exactly 'widget'
+            if root.tag != 'widget':
+                new_root = ET.Element('widget')
+                # move children
+                for child in list(root):
+                    new_root.append(child)
+                # copy attributes except xmlns* to avoid namespace reintroduction
+                for k, v in list(root.attrib.items()):
+                    if not k.startswith('xmlns'):
+                        new_root.set(k, v)
+                root = new_root
+                tree._setroot(root)
+            # helpers
+            def set_pref(name, value):
+                for pref in root.findall('preference'):
+                    if pref.get('name') == name:
+                        pref.set('value', value)
+                        return
+                p = ET.SubElement(root, 'preference')
+                p.set('name', name)
+                p.set('value', value)
+            # core prefs per working example
+            set_pref('AndroidWindowSplashScreenAnimatedIcon', 'www/icons/icon-128.png')
+            set_pref('AndroidWindowSplashScreenBackground', '#ffffff')
+            # root icon
+            has_root_icon = False
+            for ic in root.findall('icon'):
+                ic.set('src', 'www/icons/icon-129.png')
+                ic.set('width', '272')
+                ic.set('height', '272')
+                ic.set('density', 'xxxhdpi')
+                has_root_icon = True
+            if not has_root_icon:
+                ET.SubElement(root, 'icon', {'src': 'www/icons/icon-129.png', 'width': '272', 'height': '272', 'density': 'xxxhdpi'})
+            # platform android
+            plat = None
+            for p in root.findall('platform'):
+                if p.get('name') == 'android':
+                    plat = p
+                    break
+            if plat is None:
+                plat = ET.SubElement(root, 'platform')
+                plat.set('name', 'android')
+            # splash tag for older stacks
+            for sp in list(plat.findall('splash')):
+                plat.remove(sp)
+            ET.SubElement(plat, 'splash', {'src': 'www/icons/icon-128.png'})
+            # write
+            try:
+                tree.write(cfg_xml, encoding='utf-8', xml_declaration=True)
+            except Exception:
+                pass
+        except Exception:
+            pass
 
     def _on_closing(self):
         kill_processes_by_name("java")
@@ -3816,11 +4056,15 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         super().__init__(parent)
         self.parent = parent
         self.on_confirm = on_confirm
-        self.title("HTML5 App Settings")
+        self.title(self.parent._tr("HTML5 App Settings"))
         self.geometry("780x700")
         self.resizable(False, False)
         self._icon_image = None
         self._icon_path = None
+        # Splash state
+        self._splash_image = None
+        self._splash_path = None
+        self.splash_color_var = tk.StringVar(value="#000000")
         # Center window
         self.update_idletasks()
         x = (self.winfo_screenwidth() // 2) - (780 // 2)
@@ -3837,7 +4081,7 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         root = ctk.CTkFrame(self)
         root.pack(fill="both", expand=True, padx=16, pady=16)
 
-        header = ctk.CTkLabel(root, text="Configure HTML5 App", font=ctk.CTkFont(size=18, weight="bold"))
+        header = ctk.CTkLabel(root, text=self.parent._tr("Configure HTML5 App"), font=ctk.CTkFont(size=18, weight="bold"))
         header.pack(anchor="w", pady=(0, 10))
 
         body = ctk.CTkFrame(root)
@@ -3850,10 +4094,10 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         right.pack(side="left", fill="both", expand=True, padx=(8, 0), pady=8)
 
         # Icon selector with preview
-        ctk.CTkLabel(left, text="App Icon", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=pad, pady=(pad, 4))
+        ctk.CTkLabel(left, text=self.parent._tr("App Icon"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=pad, pady=(pad, 4))
         self.icon_preview = ctk.CTkLabel(left, text="128x128", width=160, height=160, fg_color="#1f1f1f")
         self.icon_preview.pack(padx=pad, pady=(0, 8))
-        ctk.CTkButton(left, text="Upload Icon", command=self._choose_icon).pack(padx=pad, pady=(0, 8))
+        ctk.CTkButton(left, text=self.parent._tr("Upload Icon"), command=self._choose_icon).pack(padx=pad, pady=(0, 8))
         # Default preview from embedded base64_qrico
         try:
             if Image and ImageTk and isinstance(base64_qrico, str) and base64_qrico:
@@ -3868,10 +4112,16 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         except Exception:
             pass
 
+        # Splash selector with preview
+        ctk.CTkLabel(left, text=self.parent._tr("Splash Icon"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=pad, pady=(pad, 4))
+        self.splash_preview = ctk.CTkLabel(left, text="128x128", width=160, height=160, fg_color="#1f1f1f")
+        self.splash_preview.pack(padx=pad, pady=(0, 8))
+        ctk.CTkButton(left, text=self.parent._tr("Upload Splash"), command=self._choose_splash).pack(padx=pad, pady=(0, 8))
+
         # General settings
         blk = ctk.CTkFrame(right)
         blk.pack(fill="x", padx=pad, pady=(pad, 6))
-        ctk.CTkLabel(blk, text="General", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        ctk.CTkLabel(blk, text=self.parent._tr("General"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
 
         form = ctk.CTkFrame(blk)
         form.pack(fill="x", padx=8, pady=(0, 8))
@@ -3884,27 +4134,27 @@ class Html5ConfigDialog(ctk.CTkToplevel):
             ent.pack(side="left", fill="x", expand=True)
             return ent
 
-        self.f_id = row("App ID (e.g., com.app.id)")
+        self.f_id = row(self.parent._tr("App ID (e.g., com.app.id)"))
         self.f_id.insert(0, "COM.COMPANY.NAME")
-        self.f_name = row("App Name")
+        self.f_name = row(self.parent._tr("App Name"))
         self.f_name.insert(0, "Smart Home Assistant")
-        self.f_desc = row("Description")
+        self.f_desc = row(self.parent._tr("Description"))
         self.f_desc.insert(0, "MADE WITH SATURN BUILDER! FREE FOR EVERYONE")
-        self.f_version = row("Version (x.y.z)")
+        self.f_version = row(self.parent._tr("Version (x.y.z)"))
         self.f_version.insert(0, "1.0.0.0")
-        self.f_version_code = row("Android version code")
+        self.f_version_code = row(self.parent._tr("Android version code"))
         self.f_version_code.insert(0, "1000000")
-        self.f_author = row("Author")
+        self.f_author = row(self.parent._tr("Author"))
         self.f_author.insert(0, "EWENLOY")
-        self.f_email = row("Email")
+        self.f_email = row(self.parent._tr("Email"))
         self.f_email.insert(0, "EWENLOY@GMAIL.COM")
-        self.f_website = row("Website")
+        self.f_website = row(self.parent._tr("Website"))
         self.f_website.insert(0, "https://github.com/EwenLoy/Saturn-Builder/")
 
         # Min/Target versions & properties
         props = ctk.CTkFrame(right)
         props.pack(fill="x", padx=pad, pady=(6, 6))
-        ctk.CTkLabel(props, text="Android Versions", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        ctk.CTkLabel(props, text=self.parent._tr("Android Versions"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
 
         versions = [
             ("7.0+ (Nougat)", "24"), ("8.0+ (Oreo)", "26"), ("9.0+ (Pie)", "28"),
@@ -3919,15 +4169,15 @@ class Html5ConfigDialog(ctk.CTkToplevel):
                     break
         rowv = ctk.CTkFrame(props)
         rowv.pack(fill="x", pady=4)
-        ctk.CTkLabel(rowv, text="Min. version", width=160, anchor="w").pack(side="left")
+        ctk.CTkLabel(rowv, text=self.parent._tr("Min. version"), width=160, anchor="w").pack(side="left")
         ctk.CTkOptionMenu(rowv, values=[d for d,_ in versions], variable=self.min_display, command=on_min_change, width=220).pack(side="left")
-        ctk.CTkLabel(props, text="Target version: Android 14 (API level 34)").pack(anchor="w", padx=8, pady=(4, 8))
+        #ctk.CTkLabel(props, text=self.parent._tr("Target version: Android 14 (API level 34)")).pack(anchor="w", padx=8, pady=(4, 8))
 
         # Properties (whitelist, toggles)
-        ctk.CTkLabel(props, text="Properties", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        ctk.CTkLabel(props, text=self.parent._tr("Properties"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
         prow = ctk.CTkFrame(props)
         prow.pack(fill="x", pady=4)
-        ctk.CTkLabel(prow, text="URL whitelist", width=160, anchor="w").pack(side="left")
+        ctk.CTkLabel(prow, text=self.parent._tr("URL whitelist"), width=160, anchor="w").pack(side="left")
         self.f_whitelist = ctk.CTkEntry(prow)
         self.f_whitelist.insert(0, "http://*/* https://*/*")
         self.f_whitelist.pack(side="left", fill="x", expand=True)
@@ -3939,29 +4189,34 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         self.chk_microphone = tk.BooleanVar(value=False)
         toggles = ctk.CTkFrame(props)
         toggles.pack(fill="x", pady=6)
-        ctk.CTkCheckBox(toggles, text="Hide status bar", variable=self.chk_hide_status).pack(anchor="w")
-        ctk.CTkCheckBox(toggles, text="Require Vibrate permission", variable=self.chk_vibrate).pack(anchor="w")
-        ctk.CTkCheckBox(toggles, text="Require Camera permission", variable=self.chk_camera).pack(anchor="w")
-        ctk.CTkCheckBox(toggles, text="Require Microphone permission", variable=self.chk_microphone).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text=self.parent._tr("Hide status bar"), variable=self.chk_hide_status).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text=self.parent._tr("Require Vibrate permission"), variable=self.chk_vibrate).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text=self.parent._tr("Require Camera permission"), variable=self.chk_camera).pack(anchor="w")
+        ctk.CTkCheckBox(toggles, text=self.parent._tr("Require Microphone permission"), variable=self.chk_microphone).pack(anchor="w")
 
         # Orientation
         orient_blk = ctk.CTkFrame(right)
         orient_blk.pack(fill="x", padx=pad, pady=(6, 6))
-        ctk.CTkLabel(orient_blk, text="Orientation", font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        ctk.CTkLabel(orient_blk, text=self.parent._tr("Orientation"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
         self.orientation = tk.StringVar(value="portrait")
         orow = ctk.CTkFrame(orient_blk)
         orow.pack(fill="x", pady=4)
-        ctk.CTkRadioButton(orow, text="Portrait", variable=self.orientation, value="portrait").pack(side="left", padx=8)
-        ctk.CTkRadioButton(orow, text="Landscape", variable=self.orientation, value="landscape").pack(side="left", padx=8)
+        ctk.CTkRadioButton(orow, text=self.parent._tr("Portrait"), variable=self.orientation, value="portrait").pack(side="left", padx=8)
+        ctk.CTkRadioButton(orow, text=self.parent._tr("Landscape"), variable=self.orientation, value="landscape").pack(side="left", padx=8)
+
+        # Splash Screen settings (color selection removed from UI per request)
+        #splash_blk = ctk.CTkFrame(right)
+        #splash_blk.pack(fill="x", padx=pad, pady=(6, 6))
+        #ctk.CTkLabel(splash_blk, text=self.parent._tr("Splash Screen"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
 
         # Footer buttons
         footer = ctk.CTkFrame(root)
         footer.pack(fill="x", padx=pad, pady=(8, 0))
-        ctk.CTkButton(footer, text="Cancel", command=self.destroy, width=120).pack(side="right", padx=6)
-        ctk.CTkButton(footer, text="Confirm", command=self._confirm, width=160, fg_color="#2ecc71", hover_color="#27ae60").pack(side="right", padx=6)
+        ctk.CTkButton(footer, text=self.parent._tr("Cancel"), command=self.destroy, width=120).pack(side="right", padx=6)
+        ctk.CTkButton(footer, text=self.parent._tr("Confirm"), command=self._confirm, width=160, fg_color="#2ecc71", hover_color="#27ae60").pack(side="right", padx=6)
 
     def _choose_icon(self):
-        path = filedialog.askopenfilename(title="Select icon image", filetypes=[("Images", "*.png;*.jpg;*.jpeg;*.ico"), ("All files", "*.*")])
+        path = filedialog.askopenfilename(title=self.parent._tr("Select icon image"), filetypes=[("Images", "*.png;*.jpg;*.jpeg;*.ico"), ("All files", "*.*")])
         if not path:
             return
         try:
@@ -3984,6 +4239,38 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         except Exception:
             pass
 
+    def _choose_splash(self):
+        path = filedialog.askopenfilename(title=self.parent._tr("Select splash image"), filetypes=[("Images", "*.png;*.jpg;*.jpeg;*.ico"), ("All files", "*.*")])
+        if not path:
+            return
+        try:
+            if Image and ImageTk:
+                img = Image.open(path)
+                img = img.resize((128, 128), Image.Resampling.LANCZOS)
+                photo = ImageTk.PhotoImage(img)
+                self.splash_preview.configure(image=photo, text="")
+                self.splash_preview.image = photo
+                self._splash_image = img
+                self._splash_path = path
+                try:
+                    self.lift()
+                    self.focus_force()
+                    self.attributes('-topmost', True)
+                    self.after(200, lambda: self.attributes('-topmost', False))
+                except Exception:
+                    pass
+        except Exception:
+            pass
+
+    def _pick_splash_color(self):
+        try:
+            from tkinter import colorchooser
+            color = colorchooser.askcolor(color=self.splash_color_var.get() or "#000000")
+            if color and color[1]:
+                self.splash_color_var.set(color[1])
+        except Exception:
+            pass
+
     def _confirm(self):
         data = {
             "id": self.f_id.get().strip() or "com.example.app",
@@ -4002,13 +4289,210 @@ class Html5ConfigDialog(ctk.CTkToplevel):
             "permVibrate": self.chk_vibrate.get(),
             "permCamera": self.chk_camera.get(),
             "permMic": self.chk_microphone.get(),
-
-            "iconPath": self._icon_path
+            "iconPath": self._icon_path,
+            "splashIconPath": self._splash_path,
+            "splashColor": self.splash_color_var.get() or "#000000"
         }
         try:
+            # Apply to config files immediately
+            try:
+                self._apply_to_configs(data)
+            except Exception:
+                pass
+            # Call parent callback
             self.on_confirm(data, self._icon_image)
         finally:
             self.destroy()
+
+    def _apply_to_configs(self, data):
+        try:
+            proj = getattr(self.parent, 'project_path', None)
+            if not proj:
+                return
+            # Save images into project
+            if self._icon_image is not None:
+                try:
+                    icon_out = os.path.join(proj, 'icon_128.png')
+                    self._icon_image.save(icon_out, format='PNG')
+                    # also save common Cordova root icon name so generator can pick it
+                    icon_root = os.path.join(proj, 'icon.png')
+                    self._icon_image.save(icon_root, format='PNG')
+                    # also save into resources/ for cordova-res
+                    res_dir = os.path.join(proj, 'resources')
+                    try:
+                        os.makedirs(res_dir, exist_ok=True)
+                        self._icon_image.save(os.path.join(res_dir, 'icon.png'), format='PNG')
+                    except Exception:
+                        pass
+                    # also save into www/icons like working config
+                    www_icons = os.path.join(proj, 'www', 'icons')
+                    try:
+                        os.makedirs(www_icons, exist_ok=True)
+                        # save as icon-128.png and icon-129.png for compatibility
+                        self._icon_image.save(os.path.join(www_icons, 'icon-128.png'), format='PNG')
+                        self._icon_image.save(os.path.join(www_icons, 'icon-129.png'), format='PNG')
+                    except Exception:
+                        pass
+                except Exception:
+                    pass
+            # If splash not selected, fallback to app icon (base64_string of Saturn Builder icon)
+            if self._splash_image is None:
+                try:
+                    if Image and isinstance(base64_string, str) and base64_string:
+                        import base64, io
+                        _data_fallback = base64.b64decode(base64_string.strip())
+                        self._splash_image = Image.open(io.BytesIO(_data_fallback)).convert('RGBA')
+                        self._splash_image = self._splash_image.resize((128, 128), Image.Resampling.LANCZOS)
+                except Exception:
+                    pass
+            if self._splash_image is not None:
+                try:
+                    splash_out = os.path.join(proj, 'splash_128.png')
+                    self._splash_image.save(splash_out, format='PNG')
+                    # also save into resources/
+                    res_dir = os.path.join(proj, 'resources')
+                    try:
+                        os.makedirs(res_dir, exist_ok=True)
+                        self._splash_image.save(os.path.join(res_dir, 'splash.png'), format='PNG')
+                    except Exception:
+                        pass
+                    # also save into www/icons where prefs will point
+                    www_icons = os.path.join(proj, 'www', 'icons')
+                    try:
+                        os.makedirs(www_icons, exist_ok=True)
+                        self._splash_image.save(os.path.join(www_icons, 'icon-128.png'), format='PNG')
+                    except Exception:
+                        pass
+                except Exception:
+                    pass
+            # Update config.json (create or merge)
+            import json
+            cfg_json_path = os.path.join(proj, 'config.json')
+            cfg = {}
+            if os.path.exists(cfg_json_path):
+                try:
+                    with open(cfg_json_path, 'r', encoding='utf-8') as f:
+                        cfg = json.load(f)
+                except Exception:
+                    cfg = {}
+            cfg.update({
+                'id': data['id'],
+                'name': data['name'],
+                'description': data['description'],
+                'version': data['version'],
+                'versionCode': data['versionCode'],
+                'author': data['author'],
+                'email': data['email'],
+                'website': data['website'],
+                'whitelist': data['whitelist'],
+                'minApi': data['minApi'],
+                'targetApi': data['targetApi'],
+                'orientation': data['orientation'],
+                'hideStatus': data['hideStatus'],
+                'permissions': {
+                    'vibrate': data['permVibrate'],
+                    'camera': data['permCamera'],
+                    'microphone': data['permMic']
+                },
+                'icon': 'icon_128.png' if self._icon_image is not None else data.get('iconPath'),
+                'splashIcon': 'splash_128.png' if self._splash_image is not None else data.get('splashIconPath'),
+                'splashColor': data.get('splashColor')
+            })
+            with open(cfg_json_path, 'w', encoding='utf-8') as f:
+                json.dump(cfg, f, indent=2, ensure_ascii=False)
+            # Update config.xml (ensure splash color/preferences are set regardless of existence)
+            cfg_xml_path = os.path.join(proj, 'config.xml')
+            if os.path.exists(cfg_xml_path):
+                import xml.etree.ElementTree as ET
+                try:
+                    tree = ET.parse(cfg_xml_path)
+                    root = tree.getroot()
+                except Exception:
+                    # Create a minimal Cordova config if parsing fails
+                    root = ET.Element('widget')
+                    tree = ET.ElementTree(root)
+            else:
+                # create minimal config.xml if missing
+                import xml.etree.ElementTree as ET
+                root = ET.Element('widget')
+                tree = ET.ElementTree(root)
+            # helper to ensure preference (works for both newly created and existing config.xml)
+            import xml.etree.ElementTree as ET
+            def set_pref(name, value):
+                for pref in root.findall("preference"):
+                    if pref.get('name') == name:
+                        pref.set('value', value)
+                        return
+                p = ET.SubElement(root, 'preference')
+                p.set('name', name)
+                p.set('value', value)
+
+            # normalize color and ensure preferences are set/updated
+            col = (data.get('splashColor') or '#000000')
+            try:
+                col = col.strip().upper()
+            except Exception:
+                col = '#000000'
+            if not col.startswith('#'):
+                col = '#' + col
+            # Apply prefs for both new and existing configs
+            set_pref('SplashScreenBackgroundColor', col)
+            set_pref('AndroidWindowSplashScreenAnimatedIcon', 'www/icons/icon-128.png')
+            set_pref('AndroidWindowSplashScreenBackground', col)
+            set_pref('SplashMaintainAspectRatio', 'true')
+            # simple icon entries
+            # root icon for all platforms
+            # Update or add root-level <icon src="icon.png"/>
+            root_icon_set = False
+            for ic in root.findall('icon'):
+                ic.set('src', 'www/icons/icon-129.png')
+                root_icon_set = True
+            if not root_icon_set:
+                ET.SubElement(root, 'icon', {'src': 'www/icons/icon-129.png', 'width': '272', 'height': '272', 'density': 'xxxhdpi'})
+            # Ensure <platform name="android"> exists
+            plat = None
+            for p in root.findall('platform'):
+                if p.get('name') == 'android':
+                    plat = p
+                    break
+            if plat is None:
+                plat = ET.SubElement(root, 'platform')
+                plat.set('name', 'android')
+            # add icon and splash 128x128 as generic resources
+            if self._icon_image is not None or data.get('iconPath'):
+                # remove previous icons with src icon_128.png
+                for ic in list(plat.findall('icon')):
+                    if ic.get('src') in ('icon_128.png', 'res/icon/android/icon-96-mdpi.png'):
+                        plat.remove(ic)
+                ET.SubElement(plat, 'icon', {'src': 'www/icons/icon-129.png', 'width': '272', 'height': '272', 'density': 'xxxhdpi'})
+            if self._splash_image is not None or data.get('splashIconPath'):
+                for sp in list(plat.findall('splash')):
+                    if sp.get('src') in ('splash_128.png', 'res/screen/android/splash-port-mdpi.png'):
+                        plat.remove(sp)
+                ET.SubElement(plat, 'splash', {'src': 'www/icons/icon-128.png'})
+                # For newer cordova-android versions, also set background and drawable via preferences
+            try:
+                tree.write(cfg_xml_path, encoding='utf-8', xml_declaration=True)
+            except Exception:
+                pass
+            # Mark that resources updated so next build refreshes platform
+            try:
+                import json
+                marker = os.path.join(proj, '.cordova_assets.json')
+                state = {}
+                if os.path.exists(marker):
+                    try:
+                        with open(marker, 'r', encoding='utf-8') as f:
+                            state = json.load(f)
+                    except Exception:
+                        state = {}
+                state['pendingResourceUpdate'] = True
+                with open(marker, 'w', encoding='utf-8') as f:
+                    json.dump(state, f)
+            except Exception:
+                pass
+        except Exception:
+            pass
 
 def set_window_icon(window):
     """Helper function to set icon for customtkinter windows using BASE64"""
@@ -4087,7 +4571,6 @@ def main():
     
     # Проверяем наличие иконки
     check_icon_file()
-    
     app = MainApp()
     try:
         app.mainloop()
@@ -4096,4 +4579,3 @@ def main():
         sys.exit(1)
 if __name__ == "__main__":
     main()
-    
