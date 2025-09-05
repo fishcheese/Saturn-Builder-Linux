@@ -1,4 +1,7 @@
-## <div align="center"><img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/cd085b32-5d66-4016-b691-272b6631c8b0" />  Construct 3 Cordova ZIP to APK Builder 
+<meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" />
+
+
+ ## <div align="center"><img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/cd085b32-5d66-4016-b691-272b6631c8b0" /> Construct 3 Cordova ZIP to APK Builder 
    <div align="center"><img width="200" height="200" alt="" src="https://github.com/user-attachments/assets/b427cf12-2630-4aff-8d52-a465ac1397cf" />
 <br>
 <br>
@@ -127,8 +130,4 @@ This project uses the MIT License. Check [LICENSE](LICENSE) for more info.
 - Convert HTML5 to Android
 - No code Android builder
 - Construct 3 export Android
-<meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" />
-<meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" />
-<meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" />
-[google7477c43780ef47af.html](https://github.com/user-attachments/files/22179106/google7477c43780ef47af.html)
-google-site-verification: google7477c43780ef47af.html
+
