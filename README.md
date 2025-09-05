@@ -120,3 +120,10 @@ Support Saturn-Builder! Scan the QR code or click below to buy me a coffee:
 ## 📜 License
 
 This project uses the MIT License. Check [LICENSE](LICENSE) for more info.
+
+## 🔍 Search Keywords
+- Construct 3 to APK
+- Cordova APK builder
+- Convert HTML5 to Android
+- No code Android builder
+- Construct 3 export Android
