@@ -1,4 +1,4 @@
-<meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" />
+<head><meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" /><head>
 
 
  ## <div align="center"><img width="20" height="20" alt="image" src="https://github.com/user-attachments/assets/cd085b32-5d66-4016-b691-272b6631c8b0" /> Construct 3 Cordova ZIP to APK Builder 
