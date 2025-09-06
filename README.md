@@ -105,10 +105,12 @@ Saturn-Builder downloads these tools automatically:
 
 - **GitHub**: [@EwenLoy](https://github.com/EwenLoy)
 - **Email**: ewenloy@gmail.com
+- **Youtube**: [@EwenLoy](https://www.youtube.com/@EwenLoy)
+- **Telegram**: [SaturnBuilder](https://t.me/saturnbuilder)
 - **Facebook**: Soon
 - **Discord**: Soon
-- **Telegram**: [SaturnBuilder](https://t.me/saturnbuilder)
 - **X**: Soon
+
 
 ## 💰 Buy Me a Coffee / ☕ Поддержите школьника:)
 <div align="left"><img width="246" height="246" alt="qr-code" src="https://github.com/user-attachments/assets/23c8c13a-10dd-4507-b84b-8ea11071c769" />
