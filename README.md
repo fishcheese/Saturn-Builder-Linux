@@ -109,7 +109,7 @@ Saturn-Builder downloads these tools automatically:
 - **Telegram**: [SaturnBuilder](https://t.me/saturnbuilder)
 - **Facebook**: Soon
 - **Discord**: Soon
-- **X**: Soon
+- **X(Twitter)**: [EwenLoy](https://x.com/EwenLoy)
 
 
 ## 💰 Buy Me a Coffee / ☕ Поддержите школьника:)
