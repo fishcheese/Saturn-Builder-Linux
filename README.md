@@ -33,7 +33,7 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 1. Visit the [releases page](https://github.com/EwenLoy/Saturn-Builder/releases/) / Просто скачайте exe со страницы релизов
 2. Download the `Saturn-Builder.exe`.
 3. Double-click the file to install and open the app.
-
+4. If you don't want to read the instructions, you can watch the [video guide](https://youtu.be/iGbkVkpYeIA) / Если вы не хотите читать инструкции, вы можете посмотреть [гайд на YouTube](https://youtu.be/F3EWrLdfKYM)
 ## 👀 How to use / Как пользоваться
 
 1. **First start**: / Первый запуск
@@ -109,7 +109,7 @@ Saturn-Builder downloads these tools automatically:
 - **Telegram**: [SaturnBuilder](https://t.me/saturnbuilder)
 - **Facebook**: Soon
 - **Discord**: Soon
-- **X(Twitter)**: [EwenLoy](https://x.com/EwenLoy)
+- **X (Twitter)**: [EwenLoy](https://x.com/EwenLoy)
 
 
 ## 💰 Buy Me a Coffee / ☕ Поддержите школьника:)
