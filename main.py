@@ -169,13 +169,69 @@ TRANSLATIONS = {
     "Choose": "Выбрать",
     "Create": "Создать",
     "Clear": "Очистить",
-    "Manual Actions": "Ручные действия",
+    "Manual Actions": "Ручные настройки",
+    "Plugins": "Плагины",
+    "Use recommended plugins": "Выбрать рекомендуемые",
+    # Plugin info titles
+    "plugin.info.geolocation.title": "Geolocation (cordova-plugin-geolocation)",
+    "plugin.info.geolocation.title|ru": "Геолокация (cordova-plugin-geolocation)",
+    "plugin.info.admob.title": "AdMob Plus (community-admob-plus-cordova)",
+    "plugin.info.admob.title|ru": "AdMob Plus (community-admob-plus-cordova)",
+    "plugin.info.consent.title": "Consent (cordova-plugin-consent)",
+    "plugin.info.consent.title|ru": "Consent (cordova-plugin-consent)",
+    "plugin.info.device.title": "Device (cordova-plugin-device)",
+    "plugin.info.device.title|ru": "Device (cordova-plugin-device)",
+    "plugin.info.constructexport.title": "Construct Mobile Export 2 (construct-mobile-export2)",
+    "plugin.info.constructexport.title|ru": "Construct Mobile Export 2 (construct-mobile-export2)",
+    "plugin.info.purchase.title": "In-App Purchase (cordova-plugin-purchase)",
+    "plugin.info.purchase.title|ru": "Покупки в приложении (cordova-plugin-purchase)",
+    "plugin.info.social.title": "Social Sharing (cordova-plugin-x-socialsharing)",
+    "plugin.info.social.title|ru": "Social Sharing (cordova-plugin-x-socialsharing)",
+    "plugin.info.file.title": "File (cordova-plugin-file)",
+    "plugin.info.file.title|ru": "File (cordova-plugin-file)",
+    "plugin.info.rate.title": "Construct Mobile Rate 2 (construct-mobile-rate2)",
+    "plugin.info.rate.title|ru": "Construct Mobile Rate 2 (construct-mobile-rate2)",
+    "plugin.info.iab.title": "InAppBrowser (cordova-plugin-inappbrowser)",
+    "plugin.info.iab.title|ru": "InAppBrowser (cordova-plugin-inappbrowser)",
+    "plugin.info.playgames.title": "Play Games (construct-play-games)",
+    "plugin.info.playgames.title|ru": "Play Games (construct-play-games)",
+    "plugin.info.fullscreen.title": "Fullscreen (cordova-plugin-fullscreen)",
+    "plugin.info.fullscreen.title|ru": "Fullscreen (cordova-plugin-fullscreen)",
+    "plugin.info.notch.title": "Android Notch (cordova-plugin-android-notch)",
+    "plugin.info.notch.title|ru": "Android Notch (cordova-plugin-android-notch)",
+    # Plugin info bodies
+    "plugin.info.geolocation.body": "Purpose: Get user's current latitude/longitude.\nUse for: location, navigation, local services.\nNote: Requires user permission.",
+    "plugin.info.geolocation.body|ru": "Назначение: Получение текущих координат (широта, долгота).\nИспользуется для: Местоположение, навигация, локальные сервисы.\nВажно: Требует разрешения пользователя.",
+    "plugin.info.admob.body": "Purpose: Google AdMob ads (banners, interstitials, rewarded).\nTip: Use with Consent (GDPR/EU).",
+    "plugin.info.admob.body|ru": "Назначение: Реклама Google AdMob (баннеры, полноэкранные, видео за награду).\nСовет: Использовать вместе с Consent (GDPR/ЕС).",
+    "plugin.info.consent.body": "Purpose: Handle data consent (GDPR/CCPA).\nUse: show consent before ads.",
+    "plugin.info.consent.body|ru": "Назначение: Управление согласием на сбор данных (GDPR/CCPA).\nИспользуется для: Показа баннера согласия перед рекламой.",
+    "plugin.info.device.body": "Purpose: Device info (model, OS, platform). Provides navigator.app.exitApp() on Android.",
+    "plugin.info.device.body|ru": "Назначение: Информация об устройстве (модель, ОС, платформа). Даёт доступ к navigator.app.exitApp() на Android.",
+    "plugin.info.constructexport.body": "System plugin for Construct exports. Do not remove.",
+    "plugin.info.constructexport.body|ru": "Системный плагин для экспорта Construct. Не удаляйте.",
+    "plugin.info.purchase.body": "Purpose: In-app purchases (one-time, subscriptions). Requires store setup.",
+    "plugin.info.purchase.body|ru": "Назначение: Покупки в приложении (разовые и подписки). Требует настройки в магазинах.",
+    "plugin.info.social.body": "Share text/links/images via apps (WhatsApp, FB, Email, etc).",
+    "plugin.info.social.body|ru": "Делится текстом/ссылками/изображениями через приложения (WhatsApp, Facebook, Email и др.).",
+    "plugin.info.file.body": "File system access: read/write/create/delete. Useful for caching/offline.",
+    "plugin.info.file.body|ru": "Доступ к файловой системе: чтение/запись/создание/удаление. Полезно для кеша и офлайна.",
+    "plugin.info.rate.body": "Prompt users to rate your app in store.",
+    "plugin.info.rate.body|ru": "Предлагает пользователю оценить приложение в магазине.",
+    "plugin.info.iab.body": "Open web pages inside app (privacy policy, auth).",
+    "plugin.info.iab.body|ru": "Открывает веб‑страницы внутри приложения (политика, авторизация).",
+    "plugin.info.playgames.body": "Google Play Games: cloud save, leaderboards, achievements (Android).",
+    "plugin.info.playgames.body|ru": "Google Play Games: облачные сохранения, лидеры, достижения (Android).",
+    "plugin.info.fullscreen.body": "Control immersive fullscreen and system bars.",
+    "plugin.info.fullscreen.body|ru": "Управление полноэкранным режимом и системными панелями.",
+    "plugin.info.notch.body": "Support devices with notch/hole; adjust content bounds.",
+    "plugin.info.notch.body|ru": "Поддержка устройств с вырезом/дыркой; настройка границ контента.",
     "Open dependencies folder": "Открыть папку зависимостей",
     "Re-check deps": "Проверить зависимости",
     "Clear logs": "Очистить логи",
     "Logs (compact)": "Логи (компактно)",
     "Save Logs": "Сохранить логи",
-    "Copy Logs": "Копировать логи",
+    "Copy logs": "Копировать логи",
     "Open log folder": "Открыть папку логов",
     "Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew.": 
         "Подсказка: Для Cordova загрузите ZIP с config.xml в корне. Для Android Studio выберите папку с gradlew.",
@@ -233,6 +289,7 @@ TRANSLATIONS = {
     "Language changed to {language}": "Язык переключен на {language}",
     "English": "English",
     "Russian": "Русский",
+    "Portuguese": "Português",
     "Installing Cordova CLI locally": "Устанавливаю Cordova CLI локально",
     "Cordova CLI installed: {version}": "Cordova CLI установлен: {version}",
     "Create a new keystore": "Создать новый keystore",
@@ -372,7 +429,6 @@ TRANSLATIONS = {
     "Info": "Информация",
     "HTML5 projects don't require Android build. Use Cordova or Android Studio if you need APK/AAB.": "HTML5 проекты не требуют Android-сборки. Используйте Cordova или Android Studio, если нужен APK/AAB.",
     # HTML5 settings dialog
-    "Configure HTML5": "Настроить HTML5",
     "Edit Config": "Редактировать конфиг",
     "HTML5 App Settings": "Настройки HTML5 приложения",
     "Configure HTML5 App": "Настройка HTML5 приложения",
@@ -407,12 +463,273 @@ TRANSLATIONS = {
     "Select icon image": "Выберите изображение иконки",
     "Select splash image": "Выберите изображение заставки"
 }
+TRANSLATIONS_PT = {
+    "Project type:": "Tipo de projeto:",
+    "Load Project": "Carregar projeto",
+    "Build:": "Tipo de compilação:",
+    "⚡ Build": "⚡ Compilar",
+    "No project loaded": "Nenhum projeto carregado",
+    "Keystore (for signed builds):": "Keystore (para compilações assinadas):",
+    "Not selected": "Não selecionado",
+    "Select Keystore": "Selecionar Keystore",
+    "Create Keystore": "Criar Keystore",
+    "Choose": "Escolher",
+    "Create": "Criar",
+    "Clear": "Limpar",
+    "Manual Actions": "Ações manuais",
+    "Plugins": "Plugins",
+    "Use recommended plugins": "Usar plugins recomendados",
+    "Open dependencies folder": "Abrir pasta de dependências",
+    "Re-check deps": "Verificar dependências",
+    "Clear logs": "Limpar logs",
+    "Logs (compact)": "Logs (compacto)",
+    "Save Logs": "Salvar logs",
+    "Copy logs": "Copiar logs",
+    "Open log folder": "Abrir pasta de logs",
+    "Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew.": "Dica: Para Cordova, envie um ZIP com config.xml na raiz. Para Android Studio, selecione a pasta do projeto com gradlew.",
+    "Ready": "Pronto",
+    "Language": "Idioma",
+    "Delete all project folders": "Excluir todas as pastas de projetos",
+    "Cordova": "Cordova",
+    "Android Studio": "Android Studio",
+    "HTML5": "HTML5",
+    "Debug APK": "APK de depuração",
+    "Unsigned Release APK": "APK de release não assinado",
+    "Unsigned AAB": "AAB não assinado",
+    "Signed Debug APK": "APK de depuração assinado",
+    "Signed Release APK": "APK de release assinado",
+    "Signed AAB": "AAB assinado",
+    "Application started": "Aplicativo iniciado",
+    "Checking dependencies...": "Verificando dependências...",
+    "Missing: {name} ({path})": "Ausente: {name} ({path})",
+    "Found: {name} ({path})": "Encontrado: {name} ({path})",
+    "Will install: {list}": "Irei instalar: {list}",
+    "Installing dependency: {name}": "Instalando dependência: {name}",
+    "Downloading {description} from {url}": "Baixando {description} de {url}",
+    "Downloaded {description} → {path}": "Baixado {description} → {path}",
+    "Extracting {description} to {target}...": "Extraindo {description} para {target}...",
+    "{description} installed to {target}": "{description} instalado em {target}",
+    "Flattening inner directory {inner} → {dir}": "Nivelando pasta interna {inner} → {dir}",
+    "Installed Node.js: {version}": "Node.js instalado: {version}",
+    "Installed JDK: {version}": "JDK instalado: {version}",
+    "Android SDK command-line tools installed to {path}": "Ferramentas de linha de comando do Android SDK instaladas em {path}",
+    "Created license file: {fname}": "Arquivo de licença criado: {fname}",
+    "License file exists: {fname}": "Arquivo de licença existente: {fname}",
+    "Accepting Android SDK licenses (writing license files + interactive sdkmanager)...": "Aceitando licenças do Android SDK (gravando arquivos + sdkmanager interativo)...",
+    "sdkmanager accepted licenses (interactive)": "sdkmanager aceitou as licenças (interativo)",
+    "Installing Android SDK components (build-tools, platforms, platform-tools)...": "Instalando componentes do Android SDK (build-tools, platforms, platform-tools)...",
+    "All dependencies installed and environment configured": "Todas as dependências instaladas e ambiente configurado",
+    "Loading Cordova ZIP: {zip}": "Carregando ZIP do Cordova: {zip}",
+    "Cordova project loaded and validated (config.xml found)": "Projeto Cordova carregado e validado (config.xml encontrado)",
+    "Build started: {mode} for {ptype}": "Compilação iniciada: {mode} para {ptype}",
+    "Using Cordova command: {cmd}": "Usando comando do Cordova: {cmd}",
+    "Adding Android platform to Cordova (if missing)...": "Adicionando a plataforma Android ao Cordova (se necessário)...",
+    "Running Cordova build: {cmd}": "Executando build do Cordova: {cmd}",
+    "Found build artifacts: {paths}": "Artefatos de build encontrados: {paths}",
+    "Artifact ready: {path} (size {size})": "Artefato pronto: {path} (tamanho {size})",
+    "Signing APK: {path}": "Assinando APK: {path}",
+    "APK signed: {path}": "APK assinado: {path}",
+    "Signing AAB: {path}": "Assinando AAB: {path}",
+    "AAB signed with jarsigner: {path}": "AAB assinado com jarsigner: {path}",
+    "Command finished successfully (code {rc})": "Comando concluído com sucesso (código {rc})",
+    "Command finished with code {rc}": "Comando finalizado com código {rc}",
+    "Error: {err}": "Erro: {err}",
+    "Warning: {warn}": "Aviso: {warn}",
+    "Keystore selected: {path}": "Keystore selecionado: {path}",
+    "Keystore created: {path}": "Keystore criado: {path}",
+    "Keystore cleared": "Keystore limpo",
+    "Logs saved: {path}": "Logs salvos: {path}",
+    "Language changed to {language}": "Idioma alterado para {language}",
+    "Installing Cordova CLI locally": "Instalando Cordova CLI localmente",
+    "Cordova CLI installed: {version}": "Cordova CLI instalado: {version}",
+    "Create a new keystore": "Criar novo keystore",
+    "First and Last Name": "Nome e Sobrenome",
+    "Organizational Unit": "Unidade organizacional",
+    "Organization": "Organização",
+    "City or Locality": "Cidade ou Localidade",
+    "State or Province": "Estado ou Província",
+    "Country Code (XX)": "Código do país (XX)",
+    "Alias": "Apelido",
+    "Validity (years)": "Validade (anos)",
+    "Keystore Password": "Senha do keystore",
+    "Confirm Password": "Confirmar senha",
+    "Key Password (optional, if different)": "Senha da chave (opcional, se diferente)",
+    "Cancel": "Cancelar",
+    "Help": "Ajuda",
+    "Passwords do not match": "As senhas não coincidem",
+    "Fill all required fields": "Preencha todos os campos obrigatórios",
+    "Keystore creation failed": "Falha ao criar keystore",
+    "No keystore configured for signed build": "Nenhum keystore configurado para compilação assinada",
+    "Signing": "Assinatura",
+    "Keystore": "Keystore",
+    "Download Info": "Informações de download",
+    "Speed: {speed}": "Velocidade: {speed}",
+    "ETA: {eta}": "ETA: {eta}",
+    "Speed: --": "Velocidade: --",
+    "ETA: --": "ETA: --",
+    "Removing dependencies...": "Removendo dependências...",
+    "Starting dependency reinstallation...": "Iniciando reinstalação de dependências...",
+    "Dependencies folder removed": "Pasta de dependências removida",
+    "Starting dependency check after removal...": "Iniciando verificação de dependências após remoção...",
+    "Error removing dependencies folder: {err}": "Erro ao remover pasta de dependências: {err}",
+    "Error during reinstall: {err}": "Erro durante reinstalação: {err}",
+    "Confirm Delete": "Confirmar exclusão",
+    "This will delete all project folders. Continue?": "Isso excluirá todas as pastas de projetos. Continuar?",
+    "Key alias": "Apelido da chave",
+    "Show passwords": "Mostrar senhas",
+    "Key password (optional)": "Senha da chave (opcional)",
+    "Confirm": "Confirmar",
+    "Validity must be a number": "Validade deve ser um número",
+    "Checking dependencies...": "Verificando dependências...",
+    "Installing {dep}...": "Instalando {dep}...",
+    "Downloading {description}...": "Baixando {description}...",
+    "Downloading {description}... {percent}%": "Baixando {description}... {percent}%",
+    "Download completed": "Download concluído",
+    "Extracting {description}... {percent}%": "Extraindo {description}... {percent}%",
+    "{description} installed": "{description} instalado",
+    "Accepting SDK licenses...": "Aceitando licenças do SDK...",
+    "Licenses accepted": "Licenças aceitas",
+    "Installing component: {comp}...": "Instalando componente: {comp}...",
+    "Component {comp} installed": "Componente {comp} instalado",
+    "Loading ZIP archive...": "Carregando arquivo ZIP...",
+    "Extracting ZIP archive... {percent}%": "Extraindo arquivo ZIP... {percent}%",
+    "Preparing project...": "Preparando projeto...",
+    "Project ready for build": "Projeto pronto para compilação",
+    "Project loading error": "Erro ao carregar projeto",
+    "Starting build...": "Iniciando compilação...",
+    "Starting Cordova build...": "Iniciando build do Cordova...",
+    "Adding Android platform...": "Adicionando plataforma Android...",
+    "Android platform added": "Plataforma Android adicionada",
+    "Android platform already added": "Plataforma Android já adicionada",
+    "Applying patches...": "Aplicando correções...",
+    "Build: {mode_internal}...": "Compilação: {mode_internal}...",
+    "Build completed": "Compilação concluída",
+    "Artifacts found": "Artefatos encontrados",
+    "Signing completed": "Assinatura concluída",
+    "Build completed successfully": "Compilação concluída com sucesso",
+    "Starting Android Studio build...": "Iniciando build do Android Studio...",
+    "Signing APK: {basename}...": "Assinando APK: {basename}...",
+    "Signing AAB: {basename}...": "Assinando AAB: {basename}...",
+    "Country code must be 2 letters": "O código do país deve ter 2 letras",
+    "Validity must be positive": "A validade deve ser positiva",
+    "Error": "Erro",
+    "Warning": "Aviso",
+    "Dependencies are still being installed. Wait or re-run after installation.": "As dependências ainda estão sendo instaladas. Aguarde ou execute novamente após a instalação.",
+    "Android Studio project loaded and validated (gradlew found)": "Projeto Android Studio carregado e validado (gradlew encontrado)",
+    "gradlew not found in folder": "gradlew não encontrado na pasta",
+    "config.xml not found in ZIP": "config.xml não encontrado no ZIP",
+    "npm not found in embedded Node — downloading npm package...": "npm não encontrado no Node embutido — baixando pacote npm...",
+    "Bootstrapped npm to {cli}": "npm preparado em {cli}",
+    "Failed to bootstrap npm: {e}": "Falha ao preparar npm: {e}",
+    "npm-cli.js not found even after bootstrap": "npm-cli.js não encontrado mesmo após preparação",
+    "node.exe not found; cannot install Cordova": "node.exe não encontrado; não é possível instalar Cordova",
+    "Cordova installation failed; binary not found": "Instalação do Cordova falhou; binário não encontrado",
+    "Cordova installation failed with code {rc}": "Instalação do Cordova falhou com código {rc}",
+    "Cordova CLI not found in dependencies": "Cordova CLI não encontrado nas dependências",
+    "Cordova platform add failed with code {rc}": "Adicionar plataforma Cordova falhou com código {rc}",
+    "Android platform already exists": "Plataforma Android já existe",
+    "Added import groovy.xml.XmlParser to cordova.gradle": "Adicionado import groovy.xml.XmlParser ao cordova.gradle",
+    "cordova.gradle already patched": "cordova.gradle já corrigido",
+    "cordova.gradle not found, skipping patch": "cordova.gradle não encontrado, ignorando correção",
+    "Cordova build failed with code {rc}": "Build do Cordova falhou com código {rc}",
+    "Gradle build failed with code {rc}": "Build do Gradle falhou com código {rc}",
+    "Keystore not configured for signed build": "Keystore não configurado para compilação assinada",
+    "zipalign not found": "zipalign não encontrado",
+    "zipalign failed; continuing with original apk": "zipalign falhou; continuando com APK original",
+    "apksigner not found": "apksigner não encontrado",
+    "apksigner returned {rc}": "apksigner retornou {rc}",
+    "jarsigner not found": "jarsigner não encontrado",
+    "jarsigner returned {rc}": "jarsigner retornou {rc}",
+    "Command timeout": "Tempo limite do comando",
+    "Executing: {cmd}": "Executando: {cmd}",
+    "Environment variables configured:": "Variáveis de ambiente configuradas:",
+    "JAVA_HOME: {path}": "JAVA_HOME: {path}",
+    "ANDROID_HOME: {path}": "ANDROID_HOME: {path}",
+    "GRADLE_HOME: {path}": "GRADLE_HOME: {path}",
+    "PATH (prefix): {path}": "PATH (prefixo): {path}",
+    "Environment setup complete": "Configuração do ambiente concluída",
+    "sdkmanager not found, skipping interactive license acceptance": "sdkmanager não encontrado, ignorando aceitação interativa de licenças",
+    "sdkmanager returned {rc}": "sdkmanager retornou {rc}",
+    "sdkmanager not found": "sdkmanager não encontrado",
+    "Installing Android SDK component: {name}": "Instalando componente do Android SDK: {name}",
+    "{comp} install returned {rc}": "Instalação de {comp} retornou {rc}",
+    "No project folders to delete": "Nenhuma pasta de projeto para excluir",
+    "Deleted all project folders: {path}": "Excluídas todas as pastas de projetos: {path}",
+    "Opening folder: {folder}": "Abrindo pasta: {folder}",
+    "Failed to create log file: {e}": "Falha ao criar arquivo de log: {e}",
+    "pyperclip not installed; cannot copy.": "pyperclip não instalado; não é possível copiar.",
+    "Saved logs to: {target}": "Logs salvos em: {target}",
+    "Error updating UI texts: {err}": "Erro ao atualizar textos da interface: {err}",
+    "Keystore selection incomplete": "Seleção de keystore incompleta",
+    "Enter keystore password:": "Digite a senha do keystore:",
+    "Enter key alias:": "Digite o apelido da chave:",
+    "Enter key password (if same as store, leave blank):": "Digite a senha da chave (se igual ao keystore, deixe em branco):",
+    "Keystore password": "Senha do keystore",
+    "Key password": "Senha da chave",
+    "Project loaded": "Projeto carregado",
+    "Support Developer": "Apoiar o desenvolvedor",
+    "Failed to open link: {error}": "Falha ao abrir link: {error}",
+    "HTML5 project loaded and validated (index.html found)": "Projeto HTML5 carregado e validado (index.html encontrado)",
+    "gradlew or index.html not found in folder": "gradlew ou index.html não encontrado na pasta",
+    "Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew. For HTML5, select a folder with index.html.": "Dica: Para Cordova, envie um ZIP com config.xml na raiz. Para Android Studio, selecione a pasta do projeto com gradlew. Para HTML5, selecione uma pasta com index.html.",
+    "Info": "Informação",
+    "HTML5 projects don't require Android build. Use Cordova or Android Studio if you need APK/AAB.": "Projetos HTML5 não exigem build Android. Use Cordova ou Android Studio se precisar de APK/AAB.",
+    "Edit Config": "Editar config",
+    "HTML5 App Settings": "Configurações do app HTML5",
+    "Configure HTML5 App": "Configurar app HTML5",
+    "App Icon": "Ícone do app",
+    "Upload Icon": "Enviar ícone",
+    "Splash Icon": "Ícone da tela de abertura",
+    "Upload Splash": "Enviar splash",
+    "General": "Geral",
+    "App ID (e.g., com.app.id)": "ID do app (ex.: com.app.id)",
+    "App Name": "Nome do app",
+    "Description": "Descrição",
+    "Version (x.y.z)": "Versão (x.y.z)",
+    "Android version code": "Código de versão Android",
+    "Author": "Autor",
+    "Email": "Email",
+    "Website": "Site",
+    "Android Versions": "Versões do Android",
+    "Min. version": "Versão mínima",
+    "Target version: Android 14 (API level 34)": "Versão alvo: Android 14 (API nível 34)",
+    "Properties": "Propriedades",
+    "URL whitelist": "Lista branca de URLs",
+    "Hide status bar": "Ocultar barra de status",
+    "Require Vibrate permission": "Exigir permissão de Vibração",
+    "Require Camera permission": "Exigir permissão de Câmera",
+    "Require Microphone permission": "Exigir permissão de Microfone",
+    "Orientation": "Orientação",
+    "Portrait": "Retrato",
+    "Landscape": "Paisagem",
+    "Splash Screen": "Tela de abertura",
+    "Background color": "Cor de fundo",
+    "Pick": "Escolher",
+    "Select icon image": "Selecionar imagem do ícone",
+    "Select splash image": "Selecionar imagem da tela de abertura"
+}
 def translate(template, lang, **kwargs):
+    # Russian
     if lang == 'ru' and template in TRANSLATIONS:
         try:
             return TRANSLATIONS[template].format(**kwargs)
         except Exception:
             return TRANSLATIONS[template]
+    # Portuguese
+    if lang == 'pt':
+        # Allow optional "|pt" suffixed keys in TRANSLATIONS as well
+        key_pt = f"{template}|pt"
+        if key_pt in TRANSLATIONS:
+            try:
+                return TRANSLATIONS[key_pt].format(**kwargs)
+            except Exception:
+                return TRANSLATIONS[key_pt]
+        if template in TRANSLATIONS_PT:
+            try:
+                return TRANSLATIONS_PT[template].format(**kwargs)
+            except Exception:
+                return TRANSLATIONS_PT[template]
+    # Default: English template
     try:
         return template.format(**kwargs) if kwargs else template
     except Exception:
@@ -532,7 +849,7 @@ class Logger:
         try:
             content = self.text_widget.get("1.0", "end")
             pyperclip.copy(content)
-            self.log("Copy Logs", "SUCCESS")
+            self.log("Copy logs", "SUCCESS")
         except Exception as e:
             self.log("Error: {err}", "ERROR", err=str(e))
     def clear_ui(self):
@@ -624,8 +941,8 @@ class MainApp(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.title("Saturn Builder")
-        self.geometry("1160x760")
-        self.minsize(980, 640)
+        self.geometry("1200x800")
+        self.minsize(1000, 680)
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
         # Set icon AFTER customtkinter configuration to prevent override
@@ -848,7 +1165,8 @@ class MainApp(ctk.CTk):
                 "fullscreen": cfg["hideStatus"],
                 "permissionTypes": [p for p,flag in (("camera",cfg["permCamera"]),("microphone",cfg["permMic"])) if flag],
                 "icons": ([{"src": icon_rel or "www/icons/icon-128.png", "width":128, "height":128, "density":"xxhdpi"}] if icon_rel else []),
-                "android": {"min": cfg["minApi"], "target": cfg["targetApi"], "engine": "12.0.0"}
+                "android": {"min": cfg["minApi"], "target": cfg["targetApi"], "engine": "12.0.0"},
+                "plugins": [p for p, enabled in (cfg.get("plugins", {}) or {}).items() if enabled]
             }
             with open(os.path.join(proj, "config.json"), "w", encoding="utf-8") as f:
                 import json
@@ -856,6 +1174,12 @@ class MainApp(ctk.CTk):
             # Create simplistic config.xml for Cordova
             # Генерируем config.xml
             splash_prefs = ""
+            # Build plugins xml from selected checkboxes (if provided)
+            try:
+                _selected_plugins = [p for p, on in (cfg.get('plugins') or {}).items() if on]
+                plugins_xml = "\n".join([f"  <plugin name=\"{p}\" />" for p in _selected_plugins])
+            except Exception:
+                plugins_xml = ""
             config_xml = f"""
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="{cfg['id']}" version="{cfg['version']}" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
@@ -875,6 +1199,7 @@ class MainApp(ctk.CTk):
     <icon density="xxxhdpi" src="www/res/mipmap-xxxhdpi/ic_launcher.png" />
   </platform>
   {''.join([f'<allow-navigation href="{u}" />' for u in cfg['whitelist'].split()])}
+{plugins_xml}
 </widget>
 """.strip()
             with open(os.path.join(proj, "config.xml"), "w", encoding="utf-8") as f:
@@ -1046,7 +1371,7 @@ class MainApp(ctk.CTk):
         self.global_percent = ctk.CTkLabel(status_frame, text="0%", font=("Arial", 12, "bold"), anchor="e")
         self.global_percent.pack(fill="x", padx=10, pady=(0, 10))
         center = ctk.CTkFrame(self, corner_radius=12)
-        center.pack(fill="both", expand=True, padx=pad, pady=(6, pad))
+        center.pack(fill="both", expand=True, padx=pad, pady=(6, 6))
         left = ctk.CTkFrame(center, corner_radius=12)
         left.pack(side="left", fill="both", expand=True, padx=(10, 6), pady=10)
         proj_info = ctk.CTkFrame(left, corner_radius=12)
@@ -1094,10 +1419,13 @@ class MainApp(ctk.CTk):
         # First row of controls
         man_controls_row1 = ctk.CTkFrame(manual_frame, corner_radius=8)
         man_controls_row1.pack(fill="x", padx=8, pady=(0, 6))
-        self.btn_open_deps = ctk.CTkButton(man_controls_row1, text=self._tr("Open dependencies folder"), width=230, command=self._open_dependencies)
-        self.btn_open_deps.pack(side="left", padx=6, pady=6)
+        """self.btn_open_deps = ctk.CTkButton(man_controls_row1, text=self._tr("Open dependencies folder"), width=230, command=self._open_dependencies)
+        self.btn_open_deps.pack(side="left", padx=6, pady=6)"""
         self.btn_recheck = ctk.CTkButton(man_controls_row1, text=self._tr("Re-check deps"), width=170, command=lambda: threading.Thread(target=self.check_dependencies, daemon=True).start())
         self.btn_recheck.pack(side="left", padx=6, pady=6)
+        self.btn_copy_logs = ctk.CTkButton(man_controls_row1, text=self._tr("Copy logs"), width=140, command=lambda: self.logger.copy())
+        self.btn_copy_logs.pack(side="left", padx=6)
+        
         self.btn_clear_logs = ctk.CTkButton(man_controls_row1, text=self._tr("Clear logs"), width=150, command=lambda: self.logger.clear_ui())
         self.btn_clear_logs.pack(side="left", padx=6, pady=6)
         
@@ -1117,7 +1445,7 @@ class MainApp(ctk.CTk):
         self.lang_btn.pack(side="left", padx=(0, 8))
         self._update_lang_button()
         right = ctk.CTkFrame(center, corner_radius=12)
-        right.pack(side="left", fill="both", expand=True, padx=(6, 10), pady=10)
+        right.pack(side="left", fill="both", expand=True, padx=(6, 10), pady=(10, 10))
         
         # Download info section
         download_info_frame = ctk.CTkFrame(right, corner_radius=8)
@@ -1131,22 +1459,14 @@ class MainApp(ctk.CTk):
         self.download_eta_label = ctk.CTkLabel(right, text=self._tr("ETA: --"), font=("Arial", 10))
         self.download_eta_label.pack(anchor="w", padx=12, pady=(0, 8))
         
-        self.lbl_logs = ctk.CTkLabel(right, text=self._tr("Logs (compact)"))
-        self.lbl_logs.pack(anchor="w", padx=8, pady=(8, 0))
-        self.log_widget = scrolledtext.ScrolledText(right, wrap="word", height=30, bg="#0b0b0b", fg="#e0e0e0", font=("Consolas", 10))
-        self.log_widget.pack(fill="both", expand=True, padx=8, pady=8)
+        # Убираем заголовок "Logs (compact)" и увеличиваем размер логов с небольшим отступом
+        self.log_widget = scrolledtext.ScrolledText(right, wrap="word", height=40, bg="#0b0b0b", fg="#e0e0e0", font=("Consolas", 10))
+        self.log_widget.pack(fill="both", expand=True, padx=8, pady=(8, 8))
         self.log_widget.configure(state="disabled")
-        log_btns = ctk.CTkFrame(right, corner_radius=8)
-        log_btns.pack(fill="x", padx=8, pady=(0, 8))
-        self.btn_save_logs = ctk.CTkButton(log_btns, text=self._tr("Save Logs"), width=140, command=lambda: self.logger.export(self))
-        self.btn_save_logs.pack(side="left", padx=6)
-        self.btn_copy_logs = ctk.CTkButton(log_btns, text=self._tr("Copy Logs"), width=140, command=lambda: self.logger.copy())
-        self.btn_copy_logs.pack(side="left", padx=6)
-        self.btn_open_logs = ctk.CTkButton(log_btns, text=self._tr("Open log folder"), width=160, command=self._open_logs_dir)
-        self.btn_open_logs.pack(side="left", padx=6)
+        # Убираем пустой фрейм log_btns чтобы лог-окно доходило до конца
         # Кнопка настройки конфигурации для HTML5 проектов
         footer = ctk.CTkFrame(self, corner_radius=12)
-        footer.pack(fill="x", padx=pad, pady=(0, pad))
+        footer.pack(fill="x", padx=pad, pady=(0, 0))
         self.hint_var = tk.StringVar(value=self._tr("Tip: For Cordova, upload a ZIP with config.xml at root. For Android Studio, select project folder with gradlew. For HTML5, select a folder with index.html."))
         ctk.CTkLabel(footer, textvariable=self.hint_var).pack(anchor="w", padx=10, pady=8)
         self._rebuild_optionmenus()
@@ -1193,16 +1513,35 @@ class MainApp(ctk.CTk):
         internal = self._build_display_to_internal.get(val, self.build_types_internal[0])
         self.build_internal_var.set(internal)
     def _update_lang_button(self):
-        if self.lang == 'en':
-            self.lang_btn.configure(text="Русский")
+        # Show the next language to switch to
+        order = ['en', 'ru', 'pt']
+        try:
+            idx = order.index(self.lang)
+        except ValueError:
+            idx = 0
+        next_lang = order[(idx + 1) % len(order)]
+        if next_lang == 'ru':
+            self.lang_btn.configure(text=self._tr("Russian"))
+        elif next_lang == 'pt':
+            self.lang_btn.configure(text=self._tr("Portuguese"))
         else:
-            self.lang_btn.configure(text="English")
+            self.lang_btn.configure(text=self._tr("English"))
     def _toggle_language(self):
-        self.lang = 'ru' if self.lang == 'en' else 'en'
+        order = ['en', 'ru', 'pt']
+        try:
+            idx = order.index(self.lang)
+        except ValueError:
+            idx = 0
+        self.lang = order[(idx + 1) % len(order)]
         self._rebuild_optionmenus()
         self._refresh_ui_texts()
         self._update_lang_button()
-        lang_name_local = self._tr("Russian") if self.lang == 'ru' else self._tr("English")
+        if self.lang == 'ru':
+            lang_name_local = self._tr("Russian")
+        elif self.lang == 'pt':
+            lang_name_local = self._tr("Portuguese")
+        else:
+            lang_name_local = self._tr("English")
         self.logger.log("Language changed to {language}", "INFO", language=lang_name_local)
     def _refresh_ui_texts(self):
         try:
@@ -1214,7 +1553,7 @@ class MainApp(ctk.CTk):
             if hasattr(self, 'btn_html5_config'):
                 self.btn_html5_config.configure(text=self._tr("Configure HTML5"))
             self.lbl_manual.configure(text=self._tr("Manual Actions"))
-            self.btn_open_deps.configure(text=self._tr("Open dependencies folder"))
+            #self.btn_open_deps.configure(text=self._tr("Open dependencies folder"))
             self.btn_recheck.configure(text=self._tr("Re-check deps"))
             self.btn_clear_logs.configure(text=self._tr("Clear logs"))
             self.btn_delete_projects.configure(text=self._tr("Delete all project folders"))
@@ -1279,17 +1618,15 @@ class MainApp(ctk.CTk):
             if hasattr(self, 'btn_clear_ks'):
                 self.btn_clear_ks.configure(text=self._tr("Clear"))
             
-            # Обновляем заголовки в секции логов
-            if hasattr(self, 'lbl_logs'):
-                self.lbl_logs.configure(text=self._tr("Logs (compact)"))
+            # Заголовок логов убран для увеличения размера окна
             
             # Обновляем кнопки в секции логов
-            if hasattr(self, 'btn_save_logs'):
-                self.btn_save_logs.configure(text=self._tr("Save Logs"))
+            """if hasattr(self, 'btn_save_logs'):
+                self.btn_save_logs.configure(text=self._tr("Save Logs"))"""
             if hasattr(self, 'btn_copy_logs'):
-                self.btn_copy_logs.configure(text=self._tr("Copy Logs"))
-            if hasattr(self, 'btn_open_logs'):
-                self.btn_open_logs.configure(text=self._tr("Open log folder"))
+                self.btn_copy_logs.configure(text=self._tr("Copy logs"))
+            """if hasattr(self, 'btn_open_logs'):
+                self.btn_open_logs.configure(text=self._tr("Open log folder"))"""
             
         except Exception as e:
             self.logger.log("Error updating UI texts: {err}", "ERROR", err=str(e))
@@ -4457,6 +4794,53 @@ class Html5ConfigDialog(ctk.CTkToplevel):
         ctk.CTkCheckBox(toggles, text=self.parent._tr("Require Camera permission"), variable=self.chk_camera).pack(anchor="w")
         ctk.CTkCheckBox(toggles, text=self.parent._tr("Require Microphone permission"), variable=self.chk_microphone).pack(anchor="w")
 
+        # Plugins section (after Properties)
+        plugins_blk = ctk.CTkFrame(right)
+        plugins_blk.pack(fill="x", padx=pad, pady=(6, 6))
+        ctk.CTkLabel(plugins_blk, text=self.parent._tr("Plugins"), font=ctk.CTkFont(size=14, weight="bold")).pack(anchor="w", padx=8, pady=(8, 6))
+        # Define plugins and create toggles
+        self.plugin_vars = {}
+        plugins_frame = ctk.CTkFrame(plugins_blk)
+        # Recommended preset toggle moved here
+        self.chk_recommended = tk.BooleanVar(value=True)
+        ctk.CTkCheckBox(plugins_blk, text=self.parent._tr("Use recommended plugins"), variable=self.chk_recommended, command=self._on_toggle_recommended).pack(anchor="w", padx=8, pady=(0, 6))
+        plugins_frame.pack(fill="x", padx=8, pady=(0, 8))
+        plugins_list = [
+            ("Geolocation", "cordova-plugin-geolocation"),
+            ("AdMob Plus", "community-admob-plus-cordova"),
+            ("Consent", "cordova-plugin-consent"),
+            ("Device", "cordova-plugin-device"),
+            ("Construct Mobile Export 2", "construct-mobile-export2"),
+            ("In-App Purchase", "cordova-plugin-purchase"),
+            ("Social Sharing", "cordova-plugin-x-socialsharing"),
+            ("File", "cordova-plugin-file"),
+            ("Construct Mobile Rate 2", "construct-mobile-rate2"),
+            ("InAppBrowser", "cordova-plugin-inappbrowser"),
+            ("Play Games", "construct-play-games"),
+            ("Fullscreen", "cordova-plugin-fullscreen"),
+            ("Android Notch", "cordova-plugin-android-notch"),
+            ("Android Permissions", "cordova-plugin-android-permissions"),
+        ]
+        # Lay out in two columns for readability
+        col_left = ctk.CTkFrame(plugins_frame)
+        col_left.pack(side="left", fill="both", expand=True)
+        col_right = ctk.CTkFrame(plugins_frame)
+        col_right.pack(side="left", fill="both", expand=True)
+        half = (len(plugins_list) + 1) // 2
+        for i, (label, name) in enumerate(plugins_list):
+            var = tk.BooleanVar(value=False)
+            self.plugin_vars[name] = var
+            target = col_left if i < half else col_right
+            row = ctk.CTkFrame(target)
+            row.pack(fill="x", pady=2)
+            # info button (square)
+            info_btn = ctk.CTkButton(row, text="i", width=24, height=24, corner_radius=12,
+                                     command=lambda pid=name, plabel=label: self._show_plugin_info(pid, plabel))
+            info_btn.pack(side="left", padx=(0, 6))
+            ctk.CTkCheckBox(row, text=label, variable=var).pack(side="left", anchor="w")
+        # Apply recommended preset if enabled
+        self._on_toggle_recommended()
+
         # Orientation
         orient_blk = ctk.CTkFrame(right)
         orient_blk.pack(fill="x", padx=pad, pady=(6, 6))
@@ -4554,7 +4938,8 @@ class Html5ConfigDialog(ctk.CTkToplevel):
             "permMic": self.chk_microphone.get(),
             "iconPath": self._icon_path,
             "splashIconPath": self._splash_path,
-            "splashColor": self.splash_color_var.get() or "#000000"
+            "splashColor": self.splash_color_var.get() or "#000000",
+            "plugins": {k: v.get() for k, v in (self.plugin_vars or {}).items()}
         }
         try:
             # Apply to config files immediately
@@ -4666,7 +5051,8 @@ class Html5ConfigDialog(ctk.CTkToplevel):
                 },
                 'icon': 'icon_128.png' if self._icon_image is not None else data.get('iconPath'),
                 'splashIcon': 'splash_128.png' if self._splash_image is not None else data.get('splashIconPath'),
-                'splashColor': data.get('splashColor')
+                'splashColor': data.get('splashColor'),
+                'plugins': [p for p, enabled in (data.get('plugins') or {}).items() if enabled]
             })
             with open(cfg_json_path, 'w', encoding='utf-8') as f:
                 json.dump(cfg, f, indent=2, ensure_ascii=False)
@@ -4696,6 +5082,19 @@ class Html5ConfigDialog(ctk.CTkToplevel):
                 p = ET.SubElement(root, 'preference')
                 p.set('name', name)
                 p.set('value', value)
+
+            # ensure selected plugins are declared in config.xml (Cordova auto-installs plugins listed here or in package.json)
+            try:
+                selected_plugins = [p for p, enabled in (data.get('plugins') or {}).items() if enabled]
+                # remove duplicates of existing plugin tags to avoid clutter
+                for plug in list(root.findall('plugin')):
+                    nm = plug.get('name') or ''
+                    if nm in selected_plugins:
+                        root.remove(plug)
+                for pname in selected_plugins:
+                    ET.SubElement(root, 'plugin', {'name': pname})
+            except Exception:
+                pass
 
             # normalize color and ensure preferences are set/updated
             col = (data.get('splashColor') or '#000000')
@@ -4769,6 +5168,61 @@ class Html5ConfigDialog(ctk.CTkToplevel):
                     json.dump(state, f)
             except Exception:
                 pass
+        except Exception:
+            pass
+
+    def _show_plugin_info(self, plugin_id, label):
+        try:
+            # Build localized help text from TRANSLATIONS
+            def tr(key):
+                # prefer exact localized override key|ru if available
+                if hasattr(self.parent, '_get_lang') and self.parent._get_lang() == 'ru':
+                    val = TRANSLATIONS.get(f"{key}|ru")
+                    if val:
+                        return val
+                return TRANSLATIONS.get(key, key)
+
+            key_map = {
+                'cordova-plugin-geolocation': ('plugin.info.geolocation.title', 'plugin.info.geolocation.body'),
+                'community-admob-plus-cordova': ('plugin.info.admob.title', 'plugin.info.admob.body'),
+                'cordova-plugin-consent': ('plugin.info.consent.title', 'plugin.info.consent.body'),
+                'cordova-plugin-device': ('plugin.info.device.title', 'plugin.info.device.body'),
+                'construct-mobile-export2': ('plugin.info.constructexport.title', 'plugin.info.constructexport.body'),
+                'cordova-plugin-purchase': ('plugin.info.purchase.title', 'plugin.info.purchase.body'),
+                'cordova-plugin-x-socialsharing': ('plugin.info.social.title', 'plugin.info.social.body'),
+                'cordova-plugin-file': ('plugin.info.file.title', 'plugin.info.file.body'),
+                'construct-mobile-rate2': ('plugin.info.rate.title', 'plugin.info.rate.body'),
+                'cordova-plugin-inappbrowser': ('plugin.info.iab.title', 'plugin.info.iab.body'),
+                'construct-play-games': ('plugin.info.playgames.title', 'plugin.info.playgames.body'),
+                'cordova-plugin-fullscreen': ('plugin.info.fullscreen.title', 'plugin.info.fullscreen.body'),
+                'cordova-plugin-android-notch': ('plugin.info.notch.title', 'plugin.info.notch.body'),
+            }
+            tkey, bkey = key_map.get(plugin_id, (None, None))
+            if tkey and bkey:
+                title = tr(tkey)
+                body = tr(bkey)
+            else:
+                title = label
+                body = label
+            messagebox.showinfo(title, body)
+        except Exception:
+            try:
+                messagebox.showinfo(label, label)
+            except Exception:
+                pass
+
+    def _on_toggle_recommended(self):
+        try:
+            # Recommended set toggles these plugins ON when enabled
+            recommended = self.chk_recommended.get()
+            for pid in (
+                'cordova-plugin-fullscreen',
+                'cordova-plugin-android-notch',
+                'cordova-plugin-android-permissions',
+                'cordova-plugin-inappbrowser',
+            ):
+                if pid in (self.plugin_vars or {}):
+                    self.plugin_vars[pid].set(recommended)
         except Exception:
             pass
 
