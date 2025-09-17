@@ -76,8 +76,6 @@ Saturn-Builder works on **Windows 10 or 11**. / Работает на win 10, 11
 >[19:06:24] ❌ Command finished with code 1 <br><br>
 >[19:06:24] ❌ Error: Cordova build failed with code 1 <br><br>
 >[19:06:24] Traceback (most recent call last): <br><br>
-> File "main.py", line 1902, in _build_thread <br><br>
-> File "main.py", line 1966, in _build_cordova <br><br>
 > Exception: Cordova build failed with code 1 <br><br>
 
 ✅ Solution: rename all files and names to English, including icons <br>
