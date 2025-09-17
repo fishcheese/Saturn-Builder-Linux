@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Saturn-Builder — Construct 3 Cordova ZIP → APK</title>
+<meta content="Saturn-Builder — удобный инструмент на Python для сборки Android APK/AAB из Cordova ZIP (Construct 3, HTML5)." name="description"/>
+<meta content="Saturn-Builder, APK builder, Cordova, Construct 3, Android, Python, ZIP to APK" name="keywords"/>
+<link crossorigin="anonymous" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" referrerpolicy="no-referrer" rel="stylesheet"/>
+<style>
+    /* === iOS26 Liquid Glass theme (same as canvas version) === */
+    :root{
+      --bg-900: #0a0b10;
+      --bg-800: #0f1220;
+      --glass-tint: rgba(255,255,255,0.06);
+      --glass-strong: rgba(255,255,255,0.09);
+      --muted: rgba(230,235,245,0.7);
+      --text: #f6fbff;
+      --accent-a: #6dd3ff;
+      --accent-b: #8a6bff;
+      --accent-c: #ff8fb2;
+      --card-radius: 22px;
+      --soft-shadow: 0 20px 60px rgba(8,10,20,0.6);
+      --glass-border: rgba(255,255,255,0.06);
+      --maxwidth: 1200px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, Inter, system-ui, "Helvetica Neue", Arial;
+      background: radial-gradient(800px 480px at 12% 12%, rgba(109,211,255,0.06), transparent 8%),
+                  radial-gradient(700px 420px at 88% 78%, rgba(138,107,255,0.04), transparent 10%),
+                  linear-gradient(180deg,var(--bg-900),var(--bg-800));
+      color:var(--text);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.45;
+      padding-top:100px;
+      overflow-y:auto;
+      min-height:100vh;
+    }
+    .liquid-blobs{
+      position:fixed; inset:0; z-index:0; pointer-events:none; overflow:hidden;
+    }
+    .blob{ position:absolute; filter: blur(70px) saturate(120%); opacity:0.55; mix-blend-mode:screen; transform: translate3d(0,0,0); will-change: transform, opacity; }
+    .blob.b1{ width:520px; height:520px; left:-10%; top:5%; background: radial-gradient(circle at 30% 30%, var(--accent-a), transparent 40%); animation: floatA 18s ease-in-out infinite; }
+    .blob.b2{ width:420px; height:420px; right:-6%; bottom:8%; background: radial-gradient(circle at 70% 70%, var(--accent-b), transparent 45%); animation: floatB 20s ease-in-out infinite; }
+    .blob.b3{ width:360px; height:360px; left:30%; bottom:-6%; background: radial-gradient(circle at 50% 50%, var(--accent-c), transparent 45%); animation: floatC 16s ease-in-out infinite; }
+    @keyframes floatA{ 0%{transform:translateY(0) scale(1)}50%{transform:translateY(26px) scale(1.06)}100%{transform:translateY(0) scale(1)} }
+    @keyframes floatB{ 0%{transform:translateY(0) scale(1)}50%{transform:translateY(-20px) scale(1.04)}100%{transform:translateY(0) scale(1)} }
+    @keyframes floatC{ 0%{transform:translateY(0) scale(1)}50%{transform:translateY(18px) scale(0.98)}100%{transform:translateY(0) scale(1)} }
+    header.app-header{
+      position:fixed; top:12px; left:12px; right:12px; height:88px; display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px; z-index:1100;
+      border-radius:26px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+      backdrop-filter: blur(18px) saturate(140%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 30px rgba(6,8,14,0.45), inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    .brand{ display:flex; gap:14px; align-items:center; z-index:1150 }
+    .brand img{ width:56px; height:56px; border-radius:14px; object-fit:cover; box-shadow: 0 12px 40px rgba(0,0,0,0.55); border:1px solid rgba(255,255,255,0.04); }
+    .brand h1{ font-size:18px; margin:0; color:var(--text); letter-spacing:0.2px; font-weight:700 }
+    .brand p{ margin:0; font-size:12px; color:var(--muted) }
+    nav.top-nav{ display:flex; gap:12px; align-items:center; z-index:1150 }
+    nav.top-nav a{ color:var(--muted); text-decoration:none; font-weight:700; padding:8px 12px; border-radius:12px; transition: all .18s cubic-bezier(.2,.9,.2,1); font-size:14px }
+    nav.top-nav a:hover{ color:var(--text); background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); transform: translateY(-3px); box-shadow: 0 12px 40px rgba(109,211,255,0.08); }
+    .controls{ display:flex; gap:10px; align-items:center }
+    .lang-btn{ display:inline-flex; align-items:center; gap:8px; padding:8px 10px; border-radius:12px; border:1px solid rgba(255,255,255,0.03); background: linear-gradient(180deg, rgba(255,255,255,0.015), transparent); color:var(--muted); cursor:pointer; font-weight:800 }
+    .lang-btn.active{ background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#021022; box-shadow: 0 14px 40px rgba(138,107,255,0.14); transform: translateY(-3px) }
+    .hamburger{ display:none; width:44px; height:44px; border-radius:12px; align-items:center; justify-content:center; cursor:pointer; border:none; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); box-shadow: 0 6px 18px rgba(109,211,255,0.09) }
+    .hamburger i{ color:white }
+    .version-badge{ font-weight:800; padding:8px 12px; border-radius:999px; background: linear-gradient(90deg,var(--accent-b),var(--accent-c)); color:white; font-size:13px; box-shadow:0 10px 30px rgba(138,107,255,0.12) }
+    main{ position:relative; max-width:var(--maxwidth); margin:20px auto; padding: 32px 20px 80px; display:block; z-index:100 }
+    .card{
+      position:relative; border-radius:var(--card-radius); padding:26px; overflow:hidden; border:1px solid var(--glass-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      backdrop-filter: blur(10px) saturate(120%);
+      box-shadow: var(--soft-shadow), inset 0 1px 0 rgba(255,255,255,0.02);
+      transition: transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s ease;
+    }
+    .card::before{ content:''; position:absolute; inset: -40%; background: radial-gradient(circle at 30% 20%, rgba(255,255,255,0.02), transparent 6%), linear-gradient(120deg, rgba(255,255,255,0.006), transparent); transform: rotate(14deg); mix-blend-mode: overlay; pointer-events:none }
+    .card:hover{ transform: translateY(-6px); box-shadow: 0 34px 90px rgba(10,10,20,0.6) }
+    .hero{ display:grid; grid-template-columns: 1fr 420px; gap:28px; align-items:stretch; margin-bottom:28px }
+    .hero-left h2{ font-size:30px; margin-bottom:10px; color:var(--text); text-shadow: 0 8px 24px rgba(0,0,0,0.6) }
+    .hero-left p.lead{ color:var(--muted); font-size:15px; margin-bottom:18px }
+    .badges{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px }
+    .badge{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; font-weight:800; font-size:13px; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.03); color:var(--muted) }
+    .badge strong{ color:var(--text) }
+    .btn{ display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:14px; font-weight:800; text-decoration:none; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#021022; box-shadow: 0 18px 56px rgba(109,211,255,0.08); transition: transform .18s ease, box-shadow .18s ease }
+    .btn.secondary{ background: transparent; color:var(--muted); border:1px solid rgba(255,255,255,0.04); font-weight:800 }
+    .btn:hover{ transform: translateY(-6px); box-shadow: 0 28px 72px rgba(109,211,255,0.12) }
+    .hero-right{ display:flex; flex-direction:column; gap:12px; justify-content:center; align-items:center; text-align:center }
+    .hero-preview{ width:100%; max-width:360px; border-radius:16px; overflow:hidden; border:1px solid rgba(255,255,255,0.04); background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent); padding:12px }
+    .hero-preview img{ width:100%; height:auto; display:block; border-radius:10px }
+    section{ margin-bottom:22px; display:block }
+    .section-grid{ display:grid; grid-template-columns: repeat(2,1fr); gap:18px; align-items:start }
+    .section-title{ display:flex; gap:12px; align-items:center; margin-bottom:12px }
+    .section-title h3{ margin:0; color:var(--accent-a); font-size:18px }
+    .glass{ padding:18px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.015), rgba(255,255,255,0.008)); border:1px solid rgba(255,255,255,0.03); box-shadow: 0 12px 40px rgba(8,10,18,0.45) }
+    .features-table{ width:100%; border-collapse:collapse; background:transparent }
+    .features-table th, .features-table td{ padding:14px 12px; text-align:left; vertical-align:middle; border-bottom:1px solid rgba(255,255,255,0.03) }
+    .features-table thead th{ color:var(--text); background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); font-weight:900; border-bottom:none }
+    .steps-grid{ display:grid; grid-template-columns: repeat(3,1fr); gap:14px; margin-top:8px }
+    .step{ padding:18px; border-radius:14px; background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0)); border:1px solid rgba(255,255,255,0.03); transition: transform .18s ease, box-shadow .18s ease }
+    .step:hover{ transform: translateY(-8px); box-shadow: 0 26px 72px rgba(109,211,255,0.06) }
+    .step h4{ margin:0 0 8px 0; color:var(--text) }
+    .step p{ margin:0; color:var(--muted); font-size:14px }
+    .warning{ background: linear-gradient(90deg, rgba(255,165,0,0.08), rgba(255,165,0,0.03)); border: 1px solid rgba(255,140,0,0.18); padding:14px;border-radius:10px;color:var(--text);margin-top:12px;font-weight:800 }
+    .usage-list{ display:flex; flex-direction:column; gap:12px }
+    .usage-list .usage-item{ padding:16px; border-radius:14px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border:1px solid rgba(255,255,255,0.03); }
+    .usage-list .usage-item h4{ margin:0 0 8px 0; color:var(--text) }
+    .usage-list .usage-item p{ margin:0; color:var(--muted) }
+    footer{ text-align:center; color:var(--muted); padding:36px 20px; font-size:13px }
+    #backToTop{ position:fixed; right:20px; bottom:20px; width:56px;height:56px;border-radius:16px; display:flex; align-items:center; justify-content:center; background: linear-gradient(90deg,var(--accent-a),var(--accent-b)); color:#021022; box-shadow: 0 20px 60px rgba(109,211,255,0.12); cursor:pointer; border:none; z-index:1200; opacity:0; transform:translateY(20px); transition:all .28s ease }
+    #backToTop.show{ opacity:1; transform:translateY(0) }
+    @media (max-width: 980px){ .hero{ grid-template-columns: 1fr } .section-grid{ grid-template-columns: 1fr } .steps-grid{ grid-template-columns: repeat(2,1fr) } }
+    @media (max-width: 760px){
+      .steps-grid{ grid-template-columns: 1fr }
+      nav.top-nav{ display:none }
+      .hamburger{ display:flex }
+      .brand p{ display:none }
+      body{ padding-top:110px }
+      .badge{ font-size:12px }
+      .card{ padding:18px }
+      header.app-header{ height:76px; top:8px; left:8px; right:8px }
+      
+      /* Скрытие виджета версии на мобильных */
+      .version-badge {
+        display: none;
+      }
+      
+      /* Исправление переполнения в мобильной версии */
+      .controls {
+        gap: 6px;
+      }
+      
+      .lang-btn {
+        padding: 6px 8px;
+        font-size: 13px;
+      }
+      
+      .hamburger {
+        width: 40px;
+        height: 40px;
+      }
+    }
+    code{ background: rgba(255,255,255,0.02); padding:6px 8px;border-radius:8px;color:var(--text) }
+    a.inline-link{ color:var(--accent-a); text-decoration:none; font-weight:800 }
+    .muted{ color:var(--muted) }
+    .small{ font-size:13px }
+    ul{ padding-left:18px }
+    
+    /* Стили для мобильного меню */
+    #mobileNavOverlay {
+      backdrop-filter: blur(10px) !important;
+    }
+    
+    .mobile-menu-content {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+    
+    .mobile-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 700;
+      transition: color 0.2s;
+    }
+    
+    .mobile-item:hover {
+      color: var(--accent-a);
+    }
+    
+    .close-btn {
+      margin-top: 24px;
+      padding: 12px 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 14px;
+      background: linear-gradient(90deg, var(--accent-a), var(--accent-b));
+      color: #021022;
+      cursor: pointer;
+      transition: transform 0.2s;
+      font-weight: 700;
+    }
+    
+    .close-btn:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+<div aria-hidden="true" class="liquid-blobs">
+<div class="blob b1"></div>
+<div class="blob b2"></div>
+<div class="blob b3"></div>
+</div>
+<header aria-label="Saturn Builder header" class="app-header" role="banner">
+<div aria-hidden="false" class="brand">
+<img alt="Saturn-Builder Logo" data-i18n-alt="logoAlt" id="logoImg" src="https://github.com/user-attachments/assets/b427cf12-2630-4aff-8d52-a465ac1397cf"/>
+<div>
+<h1 data-i18n="headerTitle"></h1>
+<p class="small" data-i18n="headerSubtitle"></p>
+</div>
+</div>
+<nav aria-label="Main navigation" class="top-nav" role="navigation">
+<a class="navlink" data-i18n="navWhat" href="#what-is"></a>
+<a class="navlink" data-i18n="navFeatures" href="#features"></a>
+<a class="navlink" data-i18n="navStart" href="#start"></a>
+<a class="navlink" data-i18n="navUsage" href="#usage"></a>
+</nav>
+<div class="controls">
+<div style="width:8px"></div>
+<div aria-label="Languages" id="langGroup" role="menubar" style="display:flex;gap:8px">
+<button aria-pressed="false" class="lang-btn" data-lang="ru" title="Русский (RU)"><span>RU</span></button>
+<button aria-pressed="false" class="lang-btn" data-lang="en" title="English (EN)"><span>EN</span></button>
+<button aria-pressed="false" class="lang-btn" data-lang="pt" title="Português (PT)"><span>PT</span></button>
+</div>
+<div style="width:12px"></div>
+<div aria-hidden="true" class="version-badge" title="Version">v1.5.0</div>
+<button aria-label="Open menu" class="hamburger" id="mobileMenuToggle" title="Menu">
+<i class="fas fa-bars"></i>
+</button>
+</div>
+</header>
+<main>
+<!-- HERO -->
+<section class="hero" id="hero">
+<div aria-label="Intro" class="card hero-left" role="region">
+<div style="display:flex;justify-content:space-between;align-items:flex-start">
+<div>
+<h2 data-i18n="heroTitle"></h2>
+<p class="lead" data-i18n="heroSubtitle"></p>
+<div class="badges" style="margin-top:12px">
+<div class="badge"><i class="fas fa-rocket"></i> <span data-i18n="badgeFeature1"></span></div>
+<div class="badge"><i class="fas fa-cogs"></i> <span data-i18n="badgeFeature2"></span></div>
+<div class="badge"><i class="fas fa-language"></i> <span data-i18n="badgeFeature3"></span></div>
+<!-- Добавленные виджеты -->
+<div class="badge"><i class="fas fa-tag"></i> <span data-i18n="badgeLatest"></span></div>
+<div class="badge"><i class="fas fa-download"></i> <span data-i18n="badgeDownloads"></span></div>
+<div class="badge"><i class="fab fa-windows"></i> <span data-i18n="badgePlatform"></span></div>
+</div>
+</div>
+<div style="text-align:right">
+<div class="small muted" data-i18n="releaseNoteShort"></div>
+</div>
+</div>
+<div aria-label="Primary actions" class="download-actions" role="group">
+<a class="btn" data-i18n="downloadBtn" href="https://github.com/EwenLoy/Saturn-Builder/releases/download/v1.5.0_betta_release/SaturnBuilder_1.5.exe" id="downloadMainBtn" title="Download Saturn-Builder (v1.5.0)"><i class="fas fa-download"></i><span></span></a>
+<a class="btn secondary" data-i18n="repoBtn" href="https://github.com/EwenLoy/Saturn-Builder" id="repoBtn" rel="noopener noreferrer" target="_blank"><i class="fab fa-github"></i><span></span></a>
+</div>
+<div class="muted small" data-i18n="heroNote" style="margin-top:18px"></div>
+</div>
+<aside aria-label="Preview &amp; demo" class="card hero-right" role="complementary">
+<div style="width:100%;display:flex;flex-direction:column;align-items:center;gap:12px">
+<div aria-hidden="false" class="hero-preview">
+<img alt="Demo build preview" data-i18n-alt="demoGifAlt" id="demoGif" loading="lazy" src="https://media.giphy.com/media/3o7btPCcdNniyf0ArS/giphy.gif"/>
+</div>
+<div class="muted small" data-i18n="demoCaption"></div>
+</div>
+</aside>
+</section>
+<!-- WHAT IS -->
+<section aria-labelledby="whatIsLabel" class="card" id="what-is" role="region">
+<div class="section-title"><h3 data-i18n="whatIsTitle" id="whatIsLabel"></h3></div>
+<div class="section-grid">
+<div class="glass">
+<p data-i18n="whatIsP1"></p>
+<p data-i18n="whatIsP2" style="margin-top:12px;color:var(--muted)"></p>
+</div>
+<div class="glass">
+<h4 data-i18n="quickBenefitsTitle"></h4>
+<ul>
+<li data-i18n="benefit1"></li>
+<li data-i18n="benefit2"></li>
+<li data-i18n="benefit3"></li>
+<li data-i18n="benefit4"></li>
+<li data-i18n="benefit5"></li>
+</ul>
+</div>
+</div>
+</section>
+<!-- FEATURES -->
+<section aria-labelledby="featuresLabel" class="card" id="features" role="region">
+<div class="section-title"><h3 data-i18n="featuresTitle" id="featuresLabel"></h3></div>
+<div class="glass">
+<table aria-label="Features" class="features-table" role="table">
+<thead>
+<tr><th data-i18n="features_col_feature"></th><th data-i18n="features_col_desc"></th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="feature-icon">⚙️ <div class="small" data-i18n="f1_title"></div></td>
+<td data-i18n="f1_desc"></td>
+</tr>
+<tr>
+<td class="feature-icon">📱 <div class="small" data-i18n="f2_title"></div></td>
+<td data-i18n="f2_desc"></td>
+</tr>
+<tr>
+<td class="feature-icon">🌍 <div class="small" data-i18n="f3_title"></div></td>
+<td data-i18n="f3_desc"></td>
+</tr>
+<tr>
+<td class="feature-icon">📊 <div class="small" data-i18n="f4_title"></div></td>
+<td data-i18n="f4_desc"></td>
+</tr>
+<tr>
+<td class="feature-icon">✨ <div class="small" data-i18n="f5_title"></div></td>
+<td data-i18n="f5_desc"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- START -->
+<section aria-labelledby="startLabel" class="card" id="start" role="region">
+<div class="section-title"><h3 data-i18n="startTitle" id="startLabel"></h3></div>
+<div class="glass">
+<p data-i18n="startIntro"></p>
+<div class="steps-grid" style="margin-top:12px">
+<div class="step" role="article">
+<h4 data-i18n="start_step1_title"></h4>
+<p data-i18n-html="start_step1_html"></p>
+</div>
+<div class="step" role="article">
+<h4 data-i18n="start_step2_title"></h4>
+<p data-i18n="start_step2"></p>
+</div>
+<div class="step" role="article">
+<h4 data-i18n="start_step3_title"></h4>
+<div style="margin-top: 10px;">
+<a class="btn" id="videoGuideBtn" rel="noopener noreferrer" style="padding: 10px 16px;" target="_blank">
+<i class="fas fa-play-circle"></i> <span data-i18n="watchVideoBtn"></span>
+</a>
+</div>
+</div>
+</div>
+<div style="margin-top:16px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+<a class="btn" data-i18n="downloadButton" href="https://github.com/EwenLoy/Saturn-Builder/releases/download/v1.5.0_betta_release/SaturnBuilder_1.5.exe" id="downloadBtnLarge" rel="noopener noreferrer" target="_blank"><i class="fas fa-download"></i> <span></span></a>
+<a class="btn secondary" data-i18n="releasesBtn" href="https://github.com/EwenLoy/Saturn-Builder/releases/" rel="noopener noreferrer" target="_blank"><i class="fas fa-tags"></i> <span></span></a>
+</div>
+</div>
+</section>
+<!-- USAGE -->
+<section aria-labelledby="usageLabel" class="card" id="usage" role="region">
+<div class="section-title"><h3 data-i18n="usageTitle" id="usageLabel"></h3></div>
+<div class="glass">
+<div class="usage-list">
+<div class="usage-item" role="article">
+<h4 data-i18n="usage_step1_title"></h4>
+<p data-i18n-html="usage_step1_desc"></p>
+<div aria-live="polite" class="warning" role="note">
+<strong data-i18n="usage_warning_title"></strong><br/>
+<span data-i18n="usage_warning_text"></span><br style="line-height:8px"/>
+<span data-i18n-html="usage_warning_example_ok"></span>   <span data-i18n-html="usage_warning_example_bad"></span>
+</div>
+</div>
+<div class="usage-item" role="article">
+<h4 data-i18n="usage_step2_title"></h4>
+<p data-i18n="usage_step2_desc"></p>
+</div>
+<div class="usage-item" role="article">
+<h4 data-i18n="usage_step3_title"></h4>
+<p data-i18n="usage_step3_desc"></p>
+</div>
+<div class="usage-item" role="article">
+<h4 data-i18n="usage_step4_title"></h4>
+<div data-i18n-html="usage_step4_build_types"></div>
+</div>
+<div class="usage-item" role="article">
+<h4 data-i18n="usage_step5_title"></h4>
+<p data-i18n="usage_step5_desc"></p>
+</div>
+<div class="usage-item" role="article">
+<h4 data-i18n="usage_step6_title"></h4>
+<p data-i18n="usage_step6_desc"></p>
+</div>
+</div>
+</div>
+</section>
+<footer class="card" role="contentinfo">
+<div style="display:flex;flex-direction:column;gap:8px;align-items:center">
+<div data-i18n-html="footerText"></div>
+<div class="small muted" style="margin-top:6px">Built with ♥ — Saturn-Builder team</div>
+</div>
+</footer>
+</main>
+<button aria-label="Back to top" id="backToTop" title="Back to top"><i class="fas fa-chevron-up"></i></button>
+<script>
+    /* ===== Full translations object (RU, EN, PT) ===== */
+    const translations = {
+      ru: {
+        headerTitle: "Saturn-Builder",
+        headerSubtitle: "Construct 3 Cordova ZIP to APK Builder",
+        badgeLatest: "Последний релиз",
+        badgeDownloads: "Загрузки",
+        badgePlatform: "Windows 10/11",
+        heroTitle: "Saturn-Builder — лёгкая сборка APK/AAB",
+        heroSubtitle: "Создавайте Android-приложения из Cordova ZIP (Construct 3, HTML5) без сложной настройки.",
+        badgeFeature1: "Auto-install deps",
+        badgeFeature2: "Fast builds",
+        badgeFeature3: "Multi-language",
+        releaseNoteShort: "v1.5.0 — Portuguese localization, HTML5 plugins",
+        heroNote: "Нажмите «Скачать», чтобы получить установщик. Программа самостоятельно установит зависимости (~1 ГБ).",
+        demoCaption: "Демо: процесс автоматической сборки APK",
+        navWhat: "Что такое?",
+        navFeatures: "Возможности",
+        navStart: "Как начать",
+        navUsage: "Как пользоваться",
+        whatIsTitle: "Что такое Saturn-Builder?",
+        whatIsP1: "Saturn-Builder — это удобное приложение на Python, которое поможет вам создавать приложения для Android без сложной настройки. Оно самостоятельно загружает и устанавливает все необходимые инструменты (около 1 ГБ). Независимо от того, новичок вы в создании приложений или у вас есть опыт, этот инструмент упрощает процесс!",
+        whatIsP2: "English: Saturn-Builder is a friendly app made with Python that helps you build Android apps without complicated setup.",
+        quickBenefitsTitle: "Коротко о выгодах",
+        benefit1: "Автоматическая установка зависимостей (~1 ГБ)",
+        benefit2: "Простая сборка APK/AAB",
+        benefit3: "Мульти-язык интерфейса",
+        benefit4: "Понятные логи и прогресс сборки",
+        benefit5: "Бесплатно и открыто для каждого",
+        featuresTitle: "Возможности",
+        features_col_feature: "Функция",
+        features_col_desc: "Описание",
+        f1_title: "Лёгкая настройка",
+        f1_desc: "Автоматически устанавливает необходимые инструменты (~1 ГБ).",
+        f2_title: "Создание приложений",
+        f2_desc: "Создаёт APK или AAB файлы для Android-приложений.",
+        f3_title: "Смена языка",
+        f3_desc: "Переключайте язык интерфейса на английский, русский или португальский.",
+        f4_title: "Показ прогресса",
+        f4_desc: "Отображает, что происходит во время сборки (логи и проценты).",
+        f5_title: "Простой интерфейс",
+        f5_desc: "Удобный экран для управления всем процессом — понятные кнопки и подсказки.",
+        startTitle: "Как начать",
+        startIntro: "Saturn-Builder работает на Windows 10 или 11.",
+        start_step1_title: "Шаг 1",
+        start_step1_html: 'Перейдите на <a href="https://github.com/EwenLoy/Saturn-Builder/releases/" target="_blank" rel="noopener noreferrer">страницу релизов</a> и скачайте <strong>Saturn-Builder.exe</strong>.',
+        start_step2_title: "Шаг 2",
+        start_step2: "Дважды кликните на файл для установки и запуска приложения.",
+        start_step3_title: "Шаг 3",
+        watchVideoBtn: "Смотреть видеогайд",
+        downloadBtn: "Скачать установщик (v1.5.0)",
+        repoBtn: "Открыть репозиторий",
+        downloadButton: "Скачать последний релиз (v1.5.0)",
+        releasesBtn: "Страница релизов",
+        usageTitle: "Как пользоваться",
+        usage_step1_title: "Первый запуск",
+        usage_step1_desc: 'После установки кликните на <strong>Saturn-Builder.exe</strong>. При первом запуске предложит установить зависимости (~1 ГБ). Нажмите <code>"Install dependencies"</code> или <code>"Skip for Now"</code> (без них сборка не сработает).',
+        usage_warning_title: "Важно!",
+        usage_warning_text: "Saturn-Builder.exe должен быть в папке с английским названием! Русские символы в пути — не работают.",
+        usage_warning_example_ok: '✅ <code>D:\\\\FOLDER\\\\SaturnBuilder_1.0.exe</code>',
+        usage_warning_example_bad: '❌ <code>D:\\\\папка на русском\\\\SaturnBuilder_1.0.exe</code>',
+        usage_step2_title: "Выберите язык",
+        usage_step2_desc: "После установки зависимостей выберите английский, русский или португальский в выпадающем меню. Интерфейс изменится сразу!",
+        usage_step3_title: "Загрузите проект",
+        usage_step3_desc: 'Нажмите <strong>"Load project"</strong> и выберите ZIP-архив Cordova, проект Android Studio или HTML5.',
+        usage_step4_title: "Выберите тип сборки",
+        usage_step4_build_types: '<ul><li>Debug APK</li><li>Unsigned release APK</li><li>Unsigned Android App Bundle (AAB)</li><li>Signed debug APK</li><li>Signed release APK</li><li>Signed Android App Bundle</li></ul>',
+        usage_step5_title: "Соберите приложение",
+        usage_step5_desc: "Если нужна подпись, загрузите или создайте ключи. Нажмите «Build» и следите за прогрессом в окне логов.",
+        usage_step6_title: "Получите приложение",
+        usage_step6_desc: "Когда сборка закончится, файлы APK/AAB будут в папке проекта, и она автоматически откроется.",
+        footerText: '&copy; 2025 EwenLoy | <a href="https://github.com/EwenLoy/Saturn-Builder" target="_blank" rel="noopener noreferrer">GitHub Repository</a> | v1.5.0: Fixed bugs, Portuguese localization, HTML5 plugins support.',
+        logoAlt: "Логотип Saturn-Builder",
+        demoGifAlt: "Демонстрация сборки APK",
+        closeBtn: "Закрыть",
+        githubBtn: "GitHub"
+      },
+      en: {
+        headerTitle: "Saturn-Builder",
+        headerSubtitle: "Construct 3 Cordova ZIP to APK Builder",
+        badgeLatest: "Latest Release",
+        badgeDownloads: "Downloads",
+        badgePlatform: "Windows 10/11",
+        heroTitle: "Saturn-Builder — easy APK/AAB builds",
+        heroSubtitle: "Build Android apps from Cordova ZIPs (Construct 3, HTML5) without complicated setup.",
+        badgeFeature1: "Auto-install deps",
+        badgeFeature2: "Fast builds",
+        badgeFeature3: "Multi-language",
+        releaseNoteShort: "v1.5.0 — Portuguese localization, HTML5 plugins",
+        heroNote: "Click Download to get the installer. The app will auto-install dependencies (~1 GB).",
+        demoCaption: "Demo: automated APK build process",
+        navWhat: "What is it?",
+        navFeatures: "Features",
+        navStart: "How to Start",
+        navUsage: "How to Use",
+        whatIsTitle: "What is Saturn-Builder?",
+        whatIsP1: "Saturn-Builder is a friendly Python application that helps you create Android apps without a complicated setup. It automatically downloads and installs all required tools (~1 GB). Whether you are new to app building or experienced, this tool streamlines the process!",
+        whatIsP2: "Русский: Saturn-Builder — это удобное приложение на Python, которое поможет вам создавать приложения для Android без сложной настройки. Оно самостоятельно загружает и устанавливает все необходимые инструменты (около 1 ГБ).",
+        quickBenefitsTitle: "Quick benefits",
+        benefit1: "Auto installs required dependencies (~1 GB)",
+        benefit2: "Build APK/AAB with a few clicks",
+        benefit3: "Multi-language UI (EN/RU/PT)",
+        benefit4: "Clear logs & progress display",
+        benefit5: "Free and open for everyone",
+        featuresTitle: "Features",
+        features_col_feature: "Feature",
+        features_col_desc: "Description",
+        f1_title: "Easy setup",
+        f1_desc: "Automatically installs required tools (~1 GB).",
+        f2_title: "App building",
+        f2_desc: "Creates APK or AAB Android application files.",
+        f3_title: "Language switch",
+        f3_desc: "Switch UI language between English, Russian and Portuguese.",
+        f4_title: "Progress display",
+        f4_desc: "Shows build progress (logs & percentages).",
+        f5_title: "Simple interface",
+        f5_desc: "A clean control screen with clear buttons and tooltips.",
+        startTitle: "How to Start",
+        startIntro: "Saturn-Builder runs on Windows 10 or 11.",
+        start_step1_title: "Step 1",
+        start_step1_html: 'Go to the <a href="https://github.com/EwenLoy/Saturn-Builder/releases/" target="_blank" rel="noopener noreferrer">releases page</a> and download <strong>Saturn-Builder.exe</strong>.',
+        start_step2_title: "Step 2",
+        start_step2: "Double-click the file to install and launch the application.",
+        start_step3_title: "Step 3",
+        watchVideoBtn: "Watch Video Guide",
+        downloadBtn: "Download installer (v1.5.0)",
+        repoBtn: "Open repository",
+        downloadButton: "Download latest release (v1.5.0)",
+        releasesBtn: "Releases page",
+        usageTitle: "How to Use",
+        usage_step1_title: "First run",
+        usage_step1_desc: 'After installation click <strong>Saturn-Builder.exe</strong>. On first run it will prompt to install dependencies (~1 GB). Click <code>"Install dependencies"</code> or <code>"Skip for Now"</code> (but without dependencies the build will not work).',
+        usage_warning_title: "Warning!",
+        usage_warning_text: "Saturn-Builder.exe must be placed in a folder with an English-only path! Non-Latin characters (e.g., Cyrillic) in the path may break the tool.",
+        usage_warning_example_ok: '✅ <code>D:\\\\FOLDER\\\\SaturnBuilder_1.0.exe</code>',
+        usage_warning_example_bad: '❌ <code>D:\\\\папка на русском\\\\SaturnBuilder_1.0.exe</code>',
+        usage_step2_title: "Choose language",
+        usage_step2_desc: "After dependencies install select English, Russian or Portuguese from the dropdown. The UI updates instantly!",
+        usage_step3_title: "Upload project",
+        usage_step3_desc: 'Click <strong>"Load project"</strong> and select a Cordova ZIP, Android Studio project, or HTML5 export.',
+        usage_step4_title: "Select build type",
+        usage_step4_build_types: '<ul><li>Debug APK</li><li>Unsigned release APK</li><li>Unsigned Android App Bundle (AAB)</li><li>Signed debug APK</li><li>Signed release APK</li><li>Signed Android App Bundle</li></ul>',
+        usage_step5_title: "Build the app",
+        usage_step5_desc: "If signing is required, upload or create keystores. Click «Build» and watch the progress in the log window.",
+        usage_step6_title: "Retrieve your app",
+        usage_step6_desc: "When the build finishes, APK/AAB files will be in the project folder and the folder will open automatically.",
+        footerText: '&copy; 2025 EwenLoy | <a href="https://github.com/EwenLoy/Saturn-Builder" target="_blank" rel="noopener noreferrer">GitHub Repository</a> | v1.5.0: Fixed bugs, Portuguese localization, HTML5 plugins support.',
+        logoAlt: "Saturn-Builder logo",
+        demoGifAlt: "APK build demo",
+        closeBtn: "Close",
+        githubBtn: "GitHub"
+      },
+      pt: {
+        headerTitle: "Saturn-Builder",
+        headerSubtitle: "ZIP Cordova do Construct 3 para APK Builder",
+        badgeLatest: "Último Lançamento",
+        badgeDownloads: "Downloads",
+        badgePlatform: "Windows 10/11",
+        heroTitle: "Saturn-Builder — builds APK/AAB com facilidade",
+        heroSubtitle: "Crie apps Android a partir de ZIPs Cordova (Construct 3, HTML5) sem configuração complicada.",
+        badgeFeature1: "Auto-install deps",
+        badgeFeature2: "Builds rápidos",
+        badgeFeature3: "Multi-idioma",
+        releaseNoteShort: "v1.5.0 — localização PT, suporte plugins HTML5",
+        heroNote: "Clique em Baixar para obter o instalador. O app instalará automaticamente as dependências (~1 GB).",
+        demoCaption: "Demonstração: processo automatizado de build de APK",
+        navWhat: "O que é?",
+        navFeatures: "Recursos",
+        navStart: "Como começar",
+        navUsage: "Como usar",
+        whatIsTitle: "O que é Saturn-Builder?",
+        whatIsP1: "Saturn-Builder é um aplicativo em Python que ajuda você a criar apps Android sem configuração complicada. Он автоматически загружает и устанавливает все необходимые инструменты (~1 ГБ). Quer você seja iniciante ou experiente, esta ferramenta simplifica o processo!",
+        whatIsP2: "English: Saturn-Builder is a friendly app made with Python that helps you build Android apps without complicated setup.",
+        quickBenefitsTitle: "Vantagens rápidas",
+        benefit1: "Instala dependências automaticamente (~1 GB)",
+        benefit2: "Cria APK/AAB com poucos cliques",
+        benefit3: "Interface multi-idioma",
+        benefit4: "Logs claros e progresso visível",
+        benefit5: "Gratuito e aberto para todos",
+        featuresTitle: "Recursos",
+        features_col_feature: "Recurso",
+        features_col_desc: "Descrição",
+        f1_title: "Configuração fácil",
+        f1_desc: "Instala automaticamente as ferramentas necessárias (~1 GB).",
+        f2_title: "Criação de apps",
+        f2_desc: "Gera arquivos APK ou AAB para Android.",
+        f3_title: "Troca de idioma",
+        f3_desc: "Alterne o idioma da interface entre Inglês, Russo e Português.",
+        f4_title: "Exibição de progresso",
+        f4_desc: "Mostra o progresso da compilação (logs и percentuais).",
+        f5_title: "Interface simples",
+        f5_desc: "Tela de controle limpa com botões и dicas claras.",
+        startTitle: "Como começar",
+        startIntro: "Saturn-Builder roda no Windows 10 ou 11.",
+        start_step1_title: "Passo 1",
+        start_step1_html: 'Acesse a <a href="https://github.com/EwenLoy/Saturn-Builder/releases/" target="_blank" rel="noopener noreferrer">página de releases</a> e baixe <strong>Saturn-Builder.exe</strong>.',
+        start_step2_title: "Passo 2",
+        start_step2: "Clique duas vezes no arquivo para instalar e executar o aplicativo.",
+        start_step3_title: "Passo 3",
+        watchVideoBtn: "Assistir Guia em Vídeo",
+        downloadBtn: "Baixar instalador (v1.5.0)",
+        repoBtn: "Abrir repositório",
+        downloadButton: "Baixar última versão (v1.5.0)",
+        releasesBtn: "Página de releases",
+        usageTitle: "Como usar",
+        usage_step1_title: "Primeira execução",
+        usage_step1_desc: 'Após a instalação, clique em <strong>Saturn-Builder.exe</strong>. Na primeira execução, será solicitado instalar dependências (~1 GB). Clique em <code>"Install dependencies"</code> ou <code>"Skip for Now"</code> (sem dependências, o build não funcionará).',
+        usage_warning_title: "Importante!",
+        usage_warning_text: "Saturn-Builder.exe deve estar em uma pasta com nome em caracteres latinos! Caminhos com caracteres não latinos (por exemplo, cirílico) podem quebrar a ferramenta.",
+        usage_warning_example_ok: '✅ <code>D:\\\\FOLDER\\\\SaturnBuilder_1.0.exe</code>',
+        usage_warning_example_bad: '❌ <code>D:\\\\pasta em portugues\\\\SaturnBuilder_1.0.exe</code>',
+        usage_step2_title: "Escolha idioma",
+        usage_step2_desc: "Após instalar dependências, selecione Inglês, Russo ou Português no menu. A interface será atualizada instantaneamente!",
+        usage_step3_title: "Carregue o projeto",
+        usage_step3_desc: 'Clique em <strong>"Load project"</strong> e selecione um ZIP Cordova, projeto Android Studio ou exportação HTML5.',
+        usage_step4_title: "Selecione o tipo de build",
+        usage_step4_build_types: '<ul><li>Debug APK</li><li>Unsigned release APK</li><li>Unsigned Android App Bundle (AAB)</li><li>Signed debug APK</li><li>Signed release APK</li><li>Signed Android App Bundle</li></ul>',
+        usage_step5_title: "Compile o app",
+        usage_step5_desc: "Se for necessário assinar, suba ou crie os keystores. Clique em 'Build' e acompanhe o progresso na janela de logs.",
+        usage_step6_title: "Recupere seu app",
+        usage_step6_desc: "Quando o build terminar, os arquivos APK/AAB estarão na pasta do projeto e a pasta será aberta automaticamente.",
+        footerText: '&copy; 2025 EwenLoy | <a href="https://github.com/EwenLoy/Saturn-Builder" target="_blank" rel="noopener noreferrer">GitHub Repository</a> | v1.5.0: Fixed bugs, Portuguese localization, HTML5 plugins support.',
+        logoAlt: "Logotipo Saturn-Builder",
+        demoGifAlt: "Demonstração de build de APK",
+        closeBtn: "Fechar",
+        githubBtn: "GitHub"
+      }
+    };
+    // ----------------------
+    function applyTranslations(lang){
+      const dict = (translations[lang]) ? translations[lang] : translations.ru;
+      document.querySelectorAll('[data-i18n]').forEach(el=>{
+        const key = el.getAttribute('data-i18n');
+        if(key && dict[key] !== undefined) {
+          // span inside buttons handled later, so for plain elements set textContent
+          if(el.tagName.toLowerCase() === 'a' && el.classList.contains('btn')) {
+            // handled below
+          } else {
+            el.textContent = dict[key];
+          }
+        }
+      });
+      document.querySelectorAll('[data-i18n-html]').forEach(el=>{
+        const key = el.getAttribute('data-i18n-html');
+        if(key && dict[key] !== undefined) el.innerHTML = dict[key];
+      });
+      document.querySelectorAll('[data-i18n-alt]').forEach(el=>{
+        const key = el.getAttribute('data-i18n-alt');
+        if(key && dict[key] !== undefined) el.alt = dict[key];
+      });
+      // buttons with span
+      document.querySelectorAll('.btn').forEach(btn=>{
+        const key = btn.getAttribute('data-i18n');
+        if(key && dict[key] !== undefined){
+          const span = btn.querySelector('span');
+          if(span) span.textContent = dict[key];
+          else btn.textContent = dict[key];
+        }
+      });
+      const videoBtn = document.getElementById('videoGuideBtn');
+      if(videoBtn){
+        if(lang === 'ru') videoBtn.href = 'https://www.youtube.com/watch?v=F3EWrLdfKYM';
+        else videoBtn.href = 'https://www.youtube.com/watch?v=iGbkVkpYeIA';
+      }
+      document.querySelectorAll('.lang-btn').forEach(b=>{
+        const l = b.getAttribute('data-lang');
+        if(l === lang){ b.classList.add('active'); b.setAttribute('aria-pressed','true'); } else { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); }
+      });
+      // fill nav links (they are anchors)
+      document.querySelectorAll('nav.top-nav a.navlink').forEach(a=>{
+        const key = a.getAttribute('data-i18n');
+        if(key && dict[key] !== undefined) a.textContent = dict[key];
+      });
+      // mobile menu strings may be used later
+      // fill footer html
+      const footerEl = document.querySelector('[data-i18n-html="footerText"]');
+      if(footerEl && dict.footerText) footerEl.innerHTML = dict.footerText;
+    }
+    const savedLang = localStorage.getItem('saturn_lang') || (navigator.language && navigator.language.startsWith('pt') ? 'pt' : (navigator.language && navigator.language.startsWith('en') ? 'en' : 'ru'));
+    applyTranslations(savedLang);
+    document.querySelectorAll('.lang-btn').forEach(btn=>{ btn.addEventListener('click',()=>{
+      const lang = btn.getAttribute('data-lang');
+      applyTranslations(lang);
+      localStorage.setItem('saturn_lang', lang);
+      if (mobileOpen) { hideMobileMenu(); showMobileMenu(); }
+    }); });
+    // smooth anchors
+    document.querySelectorAll('a[href^="#"]').forEach(a=>{
+      a.addEventListener('click', function(e){
+        const target = document.querySelector(this.getAttribute('href'));
+        if(target){ e.preventDefault(); target.scrollIntoView({behavior:'smooth', block:'start'}); }
+      });
+    });
+    // mobile menu
+    const mobileToggle = document.getElementById('mobileMenuToggle');
+    let mobileOpen = false;
+    mobileToggle.addEventListener('click', ()=>{ mobileOpen = !mobileOpen; if(mobileOpen) showMobileMenu(); else hideMobileMenu(); });
+    
+    function showMobileMenu(){
+      const currentLang = localStorage.getItem('saturn_lang') || savedLang;
+      const dict = translations[currentLang] || translations.ru;
+      const overlay = document.createElement('div'); 
+      overlay.id = 'mobileNavOverlay';
+      overlay.style = `
+        position: fixed;
+        top: 110px;
+        left: 12px;
+        right: 12px;
+        bottom: 12px;
+        background: linear-gradient(180deg, rgba(6,6,10,0.96), rgba(6,6,10,0.92));
+        backdrop-filter: blur(10px);
+        border-radius: 22px;
+        padding: 32px;
+        overflow-y: auto;
+        z-index: 1050;
+        color: var(--text);
+        font-weight: 700;
+      `;
+      
+      overlay.innerHTML = `
+        <div class="mobile-menu-content">
+          <a href="#what-is" class="navlink mobile-item">
+            <i class="fas fa-info-circle"></i> ${dict.navWhat}
+          </a>
+          <a href="#features" class="navlink mobile-item">
+            <i class="fas fa-cogs"></i> ${dict.navFeatures}
+          </a>
+          <a href="#start" class="navlink mobile-item">
+            <i class="fas fa-play-circle"></i> ${dict.navStart}
+          </a>
+          <a href="#usage" class="navlink mobile-item">
+            <i class="fas fa-question-circle"></i> ${dict.navUsage}
+          </a>
+          <a href="https://github.com/EwenLoy/Saturn-Builder" target="_blank" class="navlink mobile-item github-btn">
+            <i class="fab fa-github"></i> ${dict.githubBtn}
+          </a>
+          <button id="closeMobileNav" class="close-btn">
+            <i class="fas fa-times"></i> ${dict.closeBtn}
+          </button>
+        </div>
+      `;
+      
+      document.body.appendChild(overlay);
+      
+      document.getElementById('closeMobileNav').addEventListener('click', hideMobileMenu);
+      overlay.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=> setTimeout(hideMobileMenu, 200)));
+    }
+    
+    function hideMobileMenu(){ 
+      const overlay = document.getElementById('mobileNavOverlay'); 
+      if(overlay) overlay.remove(); 
+      mobileOpen = false; 
+    }
+    
+    // back to top
+    const backToTop = document.getElementById('backToTop');
+    window.addEventListener('scroll', ()=>{ if(window.scrollY > window.innerHeight/2) backToTop.classList.add('show'); else backToTop.classList.remove('show'); });
+    backToTop.addEventListener('click', ()=> window.scrollTo({top:0,behavior:'smooth'}));
+    // reveal on scroll
+    const io = new IntersectionObserver((entries)=>{ entries.forEach(en=>{ if(en.isIntersecting){ en.target.style.transform = 'translateY(0)'; en.target.style.opacity = '1'; en.target.style.transition = 'opacity .7s ease, transform .7s ease'; io.unobserve(en.target); } }); }, {threshold:0.12});
+    document.querySelectorAll('section, .card').forEach(el=>{ el.style.transform = 'translateY(18px)'; el.style.opacity = '0'; io.observe(el); });
+    window.addEventListener('keydown', (e)=>{ if(e.key === 'Escape') hideMobileMenu(); });
+    function fillInitialAlts(){ const lang = localStorage.getItem('saturn_lang') || savedLang; const dict = translations[lang]; document.querySelectorAll('[data-i18n-alt]').forEach(el=>{ const key = el.getAttribute('data-i18n-alt'); if(key && dict && dict[key]) el.alt = dict[key]; }); }
+    fillInitialAlts();
+    // central download/hrefs
+    const downloadUrl = "https://github.com/EwenLoy/Saturn-Builder/releases/download/v1.5.0_betta_release/SaturnBuilder_1.5.exe";
+    ['downloadMainBtn','downloadBtnLarge'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.href = downloadUrl;
+    });
+    // ensure repo button label set
+    const repoBtn = document.getElementById('repoBtn');
+    if(repoBtn) repoBtn.href = "https://github.com/EwenLoy/Saturn-Builder";
+    console.log("Saturn-Builder (iOS26 glass) page loaded. Language:", localStorage.getItem('saturn_lang') || savedLang);
+  </script>
+</body>
+</html>
