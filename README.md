@@ -1,3 +1,5 @@
+Note: Linux port is not completed!
+
 <meta name="google-site-verification" content="rn3x0ynUYDEKwcYUpAojekHXi0ZQPEG2psZrYf9Ylgo" />
 
 
